@@ -9,6 +9,8 @@ using OpenCBS.CoreDomain;
 using OpenCBS.CoreDomain.Contracts.Loans;
 using OpenCBS.CoreDomain.Events;
 using OpenCBS.Enums;
+using OpenCBS.Manager;
+using OpenCBS.Services;
 
 namespace OpenCBS.ArchitectureV2.Service
 {
