@@ -20,6 +20,10 @@ namespace OpenCBS.ArchitectureV2.Service
             var script = RunScript(configuration.ScriptName);
             script.Repay(configuration);
             return configuration.Loan;
+        public RepaymentConfiguration Repay(RepaymentConfiguration configuration)
+        {
+            var script = RunScript(configuration);
+            return (RepaymentConfiguration) script.GetVariable("configuration");
         }
 
         public Loan RepayAndSave(RepaymentConfiguration config)
