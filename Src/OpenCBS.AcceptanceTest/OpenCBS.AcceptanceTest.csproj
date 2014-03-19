@@ -75,6 +75,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\OpenCBS.ArchitectureV2\OpenCBS.ArchitectureV2.csproj">
+      <Project>{14ba2ca7-ced7-4f57-8855-b20f7bf3fb96}</Project>
+      <Name>OpenCBS.ArchitectureV2</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OpenCBS.CoreDomain\OpenCBS.CoreDomain.csproj">
       <Project>{d539c388-3848-4a3e-ab87-42b8e329755a}</Project>
       <Name>OpenCBS.CoreDomain</Name>
