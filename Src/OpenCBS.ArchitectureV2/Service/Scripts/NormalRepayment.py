@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+<<<<<<< HEAD
+=======
+#import configuration
+>>>>>>> Add normal repayment script
 
 def RepayCommission(installment):
     global amount
