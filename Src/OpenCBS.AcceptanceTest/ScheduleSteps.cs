@@ -173,7 +173,7 @@ namespace OpenCBS.AcceptanceTest
         {
             var date = DateTime.Parse(dateString, _cultureInfo, DateTimeStyles.AssumeLocal);
             var amount = Convert.ToDecimal(amountString, _cultureInfo);
-            var re = new RepaymentService()
+            var re = new RepaymentService
             {
                 Settings = new RepaymentSettings
                     {
