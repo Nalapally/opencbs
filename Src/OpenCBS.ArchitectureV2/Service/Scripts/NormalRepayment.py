@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 #import configuration
 >>>>>>> Add normal repayment script
+=======
+>>>>>>> Debug python scripts
 
 def RepayCommission(installment):
     global amount
