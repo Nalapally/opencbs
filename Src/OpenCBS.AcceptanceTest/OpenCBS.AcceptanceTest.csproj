@@ -40,21 +40,6 @@
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="OpenCBS.ArchitectureV2">
-      <HintPath>..\OpenCBS.GUI\bin\Debug\OpenCBS.ArchitectureV2.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenCBS.CoreDomain">
-      <HintPath>..\OpenCBS.GUI\bin\Debug\OpenCBS.CoreDomain.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenCBS.Engine">
-      <HintPath>..\OpenCBS.GUI\bin\Debug\OpenCBS.Engine.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenCBS.Enums">
-      <HintPath>..\OpenCBS.GUI\bin\Debug\OpenCBS.Enums.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenCBS.Shared">
-      <HintPath>..\OpenCBS.GUI\bin\Debug\OpenCBS.Shared.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -90,6 +75,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\OpenCBS.ArchitectureV2\OpenCBS.ArchitectureV2.csproj">
+      <Project>{14ba2ca7-ced7-4f57-8855-b20f7bf3fb96}</Project>
+      <Name>OpenCBS.ArchitectureV2</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OpenCBS.CoreDomain\OpenCBS.CoreDomain.csproj">
       <Project>{d539c388-3848-4a3e-ab87-42b8e329755a}</Project>
       <Name>OpenCBS.CoreDomain</Name>
