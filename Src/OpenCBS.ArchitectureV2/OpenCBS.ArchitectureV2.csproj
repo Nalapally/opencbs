@@ -94,6 +94,8 @@
     <Compile Include="Interface\ICommand.cs" />
     <Compile Include="Interface\IEventHandler.cs" />
     <Compile Include="Interface\IEventPublisher.cs" />
+    <Compile Include="Interface\Presenter\IRepaymentPresenter.cs" />
+    <Compile Include="Interface\Presenter\IRepaymentPresenterCallbacks.cs" />
     <Compile Include="Interface\Presenter\ISqlServerConnectionPresenter.cs" />
     <Compile Include="Interface\Presenter\IUpgradePresenter.cs" />
     <Compile Include="Interface\Service\IRepaymentService.cs" />
