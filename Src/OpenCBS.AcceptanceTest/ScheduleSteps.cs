@@ -87,6 +87,7 @@ namespace OpenCBS.AcceptanceTest
                 var value = row["Value"];
                 switch (row["Name"])
                 {
+                    case "USE_CENTS":
                     case "INCREMENTAL_DURING_DAYOFFS":
                     case "USE_DAILY_ACCRUAL_OF_PENALTY":
                     case "DONOT_SKIP_WEEKENDS_IN_INSTALLMENTS_DATE":
@@ -104,6 +105,7 @@ namespace OpenCBS.AcceptanceTest
         public void GivenTheLoanProduct(string loanProductName)
         {
             _loanProduct = LoanProducts.Instance[loanProductName];
+            _loanProduct.Currency.UseCents = ReferenceEquals(Settings.GetSpecificParameter("USE_CENTS"), "1");
         }
         
         [When(@"I create a loan")]
@@ -122,10 +124,10 @@ namespace OpenCBS.AcceptanceTest
             //    NonWorkingDays,
             //    ProvisionTable.GetInstance(new User()),
             //    ChartOfAccounts.GetInstance(new User())
-            //    ) {FirstInstallmentDate = ParseTableValue<DateTime>(table, "First installment date")};
+            //    ) { FirstInstallmentDate = ParseTableValue<DateTime>(table, "First installment date") };
             _loan = new Loan(_loanProduct,
                              ParseTableValue<decimal>(table, "Amount"),
-                             ParseTableValue<decimal>(table, "Interest rate"),
+                             ParseTableValue<decimal>(table, "Interest rate")/1200,
                              ParseTableValue<int>(table, "Installments"),
                              ParseTableValue<int>(table, "Grace period"),
                              ParseTableValue<DateTime>(table, "Start date"),
@@ -135,7 +137,7 @@ namespace OpenCBS.AcceptanceTest
                              NonWorkingDays,
                              ProvisionTable.GetInstance(new User()),
                              ChartOfAccounts.GetInstance(new User()));
-            //_loan.InstallmentList = ServicesProvider.GetInstance().GetContractServices().SimulateScheduleCreation(_loan);
+            _loan.InstallmentList = ServicesProvider.GetInstance().GetContractServices().SimulateScheduleCreation(_loan);
         }
 
         private static T ParseTableValue<T>(Table table, string key, T defaultValue = default(T))
@@ -183,14 +185,17 @@ namespace OpenCBS.AcceptanceTest
         {
             var date = DateTime.Parse(dateString, _cultureInfo, DateTimeStyles.AssumeLocal);
             var amount = Convert.ToDecimal(amountString, _cultureInfo);
-            var re = new RepaymentService();
-            _loan = re.Repay(new RepaymentConfiguration
+            var re = new RepaymentService
             {
-                Amount = amount,
-                Loan = _loan,
-                Date = date,
-                ScriptName = "NormalRepayment.py"
-            });
+                Settings = new RepaymentSettings
+                    {
+                        Amount = amount,
+                        Loan = _loan,
+                        Date = date,
+                        ScriptName = "NormalRepayment.py"
+                    }
+            };
+            _loan = re.Repay();
         }
 
         [When(@"I repay ([0-9,]+) on ([0-9]{2}\.[0-9]{2}\.[0-9]{4}) with no keep schedule")]
@@ -198,14 +203,8 @@ namespace OpenCBS.AcceptanceTest
         {
             var date = DateTime.Parse(dateString, _cultureInfo, DateTimeStyles.AssumeLocal);
             var amount = Convert.ToDecimal(amountString, _cultureInfo);
-            var re = new RepaymentService();
-            _loan = re.Repay(new RepaymentConfiguration
-            {
-                //Amount = amount,
-                Loan = _loan,
-                Date = date,
-                ScriptName = "EarlyRepayment.py"
-            });
+            //var re = new RepaymentService();
+            //_loan = re.Repay();
         }
         
         [Then(@"the schedule is")]
