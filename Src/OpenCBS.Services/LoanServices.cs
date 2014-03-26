@@ -1011,15 +1011,14 @@ namespace OpenCBS.Services
 
                 var scheduleBuilder = new ScheduleBuilder();
                 var installmentList = scheduleBuilder.BuildSchedule(scheduleConfiguration);
-                var schedule = Mapper.Map<IEnumerable<IInstallment>, List<Installment>>(installmentList);
-                return schedule;
+                //var schedule = Mapper.Map<IEnumerable<IInstallment>, List<Installment>>(installmentList);
+                return installmentList;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
                 return null;
             }
-
         }
 
         public Loan SimulateRescheduling(Loan loan, ScheduleConfiguration rescheduleConfiguration)
@@ -1031,7 +1030,7 @@ namespace OpenCBS.Services
                 .Finish()
                 .GetConfiguration();
 
-            var schedule = Mapper.Map<IEnumerable<Installment>, IEnumerable<IInstallment>>(copyOfLoan.InstallmentList);
+            var schedule = copyOfLoan.InstallmentList;
             var scheduleBuilder = new ScheduleBuilder();
             var rescheduleAssembler = new RescheduleAssembler();
             var copyOfRescheduleConfiguration = (IScheduleConfiguration)rescheduleConfiguration.Clone();
@@ -1045,12 +1044,10 @@ namespace OpenCBS.Services
                 scheduleConfiguration,
                 copyOfRescheduleConfiguration,
                 scheduleBuilder,
-                loan.CalculateActualOlb().Value);
+                loan.CalculateActualOlb().Value).ToList();
 
-            var newSchedule = Mapper.Map<IEnumerable<IInstallment>, List<Installment>>(schedule);
-
-            copyOfLoan.InstallmentList = newSchedule;
-            copyOfLoan.NbOfInstallments = newSchedule.Count();
+            copyOfLoan.InstallmentList = schedule;
+            copyOfLoan.NbOfInstallments = schedule.Count();
             return copyOfLoan;
         }
 
@@ -1063,7 +1060,7 @@ namespace OpenCBS.Services
                 .Finish()
                 .GetConfiguration();
 
-            var schedule = Mapper.Map<IEnumerable<Installment>, IEnumerable<IInstallment>>(copyOfLoan.InstallmentList);
+            var schedule = copyOfLoan.InstallmentList;
             var scheduleBuilder = new ScheduleBuilder();
             var trancheBuilder = new TrancheBuilder();
             var trancheAssembler = new TrancheAssembler();
@@ -1073,14 +1070,12 @@ namespace OpenCBS.Services
                     copyOfTrancheConfiguration.StartDate,
                     scheduleConfiguration.YearPolicy);
 
-            schedule = trancheAssembler.AssembleTranche(
+            var newSchedule = trancheAssembler.AssembleTranche(
                 schedule,
                 scheduleConfiguration,
                 copyOfTrancheConfiguration,
                 scheduleBuilder,
-                trancheBuilder);
-
-            var newSchedule = Mapper.Map<IEnumerable<IInstallment>, List<Installment>>(schedule);
+                trancheBuilder).ToList();
 
             foreach (var installment in newSchedule)
             {
