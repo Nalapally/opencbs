@@ -14,7 +14,7 @@ Scenario: Simple early repayment
         | Name                   | Value      |
         | Installments           | 12         |
         | Amount                 | 45000      |
-        | Interest rate          | 42         | 
+        | Interest rate          | 42		  | 
         | Grace period           | 0          |
         | Rounding               | End        |   
         | Start date             | 25.03.2014 |
