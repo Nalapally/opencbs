@@ -52,7 +52,7 @@ def RepayPrincipal(installment):
 # меняет график
 def Repay(settings):
     global principal, interest, penalty, commission
-    i = 0
+    i = settings.Loan.GetFirstUnpaidInstallment().Number - 1
     principal = settings.Principal
     interest = settings.Interest
     penalty = settings.Penalty
@@ -75,6 +75,7 @@ def GetInitAmounts(settings):
     principal = 0
     interest = 0
     penalty = settings.Loan.CalculateDailyAccrualUnpaidPenalties(settings.Date)
+    commission = 0
     while len(installments) > i and installment.ExpectedDate <= settings.Date:       
         installment = installments[i]
         principal += installment.CapitalRepayment.Value - installment.PaidCapital.Value
@@ -97,26 +98,31 @@ def GetAmounts(settings):
     principal = 0
     interest = 0
     penalty = settings.Loan.CalculateDailyAccrualUnpaidPenalties(settings.Date)
+    commission = 0
     if amount < penalty:
         penalty = amount
     amount -= penalty
     while len(installments) > i and amount > 0:       
         installment = installments[i]
 
-        unpaid = installment.CapitalRepayment.Value - installment.PaidCapital.Value
+        unpaid = installment.CommissionsUnpaid.Value
         if unpaid > amount:
             unpaid = amount
-        principal += unpaid
+        commission += unpaid
+        amount -= unpaid
 
         unpaid = installment.InterestsRepayment.Value - installment.PaidInterests.Value
         if unpaid > amount:
             unpaid = amount
         interest += unpaid
+        amount -= unpaid
 
-        unpaid = installment.CommissionsUnpaid.Value
+        unpaid = installment.CapitalRepayment.Value - installment.PaidCapital.Value
         if unpaid > amount:
             unpaid = amount
-        commission += unpaid
+        principal += unpaid
+        amount -= unpaid
+
         i += 1
     settings.Principal = principal
     settings.Interest = interest
