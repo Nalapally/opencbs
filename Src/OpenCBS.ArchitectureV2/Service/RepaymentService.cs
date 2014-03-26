@@ -21,6 +21,10 @@ namespace OpenCBS.ArchitectureV2.Service
         public Loan Repay()
         {
             var script = RunScript(Settings.ScriptName);
+            if (Settings.Amount == 0)
+                script.GetInitAmounts(Settings);
+            if (Settings.Principal == 0 && Settings.Interest == 0 && Settings.Penalty == 0 && Settings.Commission == 0)
+                script.GetAmounts(Settings);
             script.Repay(Settings);
             return Settings.Loan;
         }
