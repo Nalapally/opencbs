@@ -107,9 +107,11 @@
     <Compile Include="Interface\View\IErrorView.cs" />
     <Compile Include="Interface\View\ILoginView.cs" />
     <Compile Include="Interface\View\IMainView.cs" />
+    <Compile Include="Interface\View\IRepaymentView.cs" />
     <Compile Include="Interface\View\IUpgradeView.cs" />
     <Compile Include="Interface\View\IView.cs" />
     <Compile Include="Presenter\LoginPresenter.cs" />
+    <Compile Include="Presenter\RepaymentPresenter.cs" />
     <Compile Include="Presenter\TranslationService.cs" />
     <Compile Include="Presenter\UpgradePresenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -120,7 +122,7 @@
     </Compile>
     <Compile Include="Service\AuthService.cs" />
     <Compile Include="Service\DatabaseService.cs" />
-    <Compile Include="Service\RepaymentConfiguration.cs" />
+    <Compile Include="Service\RepaymentSettings.cs" />
     <Compile Include="Service\RepaymentService.cs" />
     <Compile Include="Service\SettingsService.cs" />
     <Compile Include="View\BaseView.cs">
