@@ -4,7 +4,7 @@ using OpenCBS.CoreDomain.Contracts.Loans;
 
 namespace OpenCBS.ArchitectureV2.Service
 {
-    public class RepaymentSettings : ICloneable
+    public class RepaymentSettings
     {
         public Loan Loan { get; set; }
         public decimal Amount { get; set; }
@@ -22,20 +22,20 @@ namespace OpenCBS.ArchitectureV2.Service
         public object Clone()
         {
             return new RepaymentSettings
-                {
-                    Amount = Amount,
-                    AmountChanged = AmountChanged,
-                    Loan = Loan.Copy(),
-                    Principal = Principal,
-                    Interest = Interest,
-                    Penalty = Penalty,
-                    Commission = Commission,
-                    Date = Date,
-                    DateChanged = DateChanged,
-                    PaymentMethod = PaymentMethod,
-                    Comment = Comment,
-                    ScriptName = ScriptName
-                };
+            {
+                Amount = Amount,
+                AmountChanged = AmountChanged,
+                Loan = Loan.Copy(),
+                Principal = Principal,
+                Interest = Interest,
+                Penalty = Penalty,
+                Commission = Commission,
+                Date = Date,
+                DateChanged = DateChanged,
+                PaymentMethod = PaymentMethod,
+                Comment = Comment,
+                ScriptName = ScriptName
+            };
         }
     }
 }
