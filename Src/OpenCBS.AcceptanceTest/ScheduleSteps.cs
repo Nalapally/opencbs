@@ -6,6 +6,7 @@ using OpenCBS.ArchitectureV2.Service;
 using OpenCBS.CoreDomain;
 using OpenCBS.CoreDomain.Accounting;
 using OpenCBS.CoreDomain.Contracts.Loans;
+using OpenCBS.CoreDomain.Events.Loan;
 using OpenCBS.CoreDomain.Products;
 using OpenCBS.Engine;
 using OpenCBS.Enums;
@@ -112,19 +113,6 @@ namespace OpenCBS.AcceptanceTest
         public void WhenICreateALoan(Table table)
         {
             _loanProduct.RoundingType = ParseTableValue<ORoundingType>(table, "Rounding");
-            //_loan = new Loan(
-            //    _loanProduct,
-            //    ParseTableValue<decimal>(table, "Amount"),
-            //    ParseTableValue<decimal>(table, "Interest rate"),
-            //    ParseTableValue<int>(table, "Installments"),
-            //    ParseTableValue<int>(table, "Grace period"),
-            //    ParseTableValue<DateTime>(table, "Start date"),
-            //    new User(),
-            //    Settings,
-            //    NonWorkingDays,
-            //    ProvisionTable.GetInstance(new User()),
-            //    ChartOfAccounts.GetInstance(new User())
-            //    ) { FirstInstallmentDate = ParseTableValue<DateTime>(table, "First installment date") };
             _loan = new Loan(_loanProduct,
                              ParseTableValue<decimal>(table, "Amount"),
                              ParseTableValue<decimal>(table, "Interest rate")/1200,
@@ -205,6 +193,49 @@ namespace OpenCBS.AcceptanceTest
             var amount = Convert.ToDecimal(amountString, _cultureInfo);
             //var re = new RepaymentService();
             //_loan = re.Repay();
+        }
+
+        [When(
+            @"I repay ([0-9,]+) on ([0-9]{2}\.[0-9]{2}\.[0-9]{4}) with ([0-9,]+) for commission with ([0-9,]+) for penalties with ([0-9,]+) for interest"
+            )]
+        public void WhenIRepayOn_WithForCommissionWithForPenaltiesWithForInterest(string amountString,
+                                                                                  string dateString,
+                                                                                  string commissionString,
+                                                                                  string penaltyString,
+                                                                                  string interestString)
+        {
+            var amount = Convert.ToDecimal(amountString, _cultureInfo);
+            var date = DateTime.Parse(dateString, _cultureInfo, DateTimeStyles.AssumeLocal);
+            var commission = Convert.ToDecimal(commissionString, _cultureInfo);
+            var penalty = Convert.ToDecimal(penaltyString, _cultureInfo);
+            var interest = Convert.ToDecimal(interestString, _cultureInfo);
+            var re = new RepaymentService
+            {
+                Settings = new RepaymentSettings
+                {
+                    Amount = amount,
+                    Loan = _loan,
+                    Date = date,
+                    Commission = commission,
+                    Penalty = penalty,
+                    Interest = interest,
+                    Principal = amount - commission - penalty - interest,
+                    ScriptName = "NormalRepayment.py"
+                }
+            };
+            _loan = re.Repay();
+        }
+
+
+        [When(@"I accrue_penalties ([0-9,]+)")]
+        public void WhenIAccrue_Penalties(string penaltyString)
+        {
+            var amount = Convert.ToDecimal(penaltyString, _cultureInfo);
+            var accrualEvent = new LoanPenaltyAccrualEvent
+            {
+                Penalty = amount
+            };
+            _loan.Events.Add(accrualEvent);
         }
         
         [Then(@"the schedule is")]
