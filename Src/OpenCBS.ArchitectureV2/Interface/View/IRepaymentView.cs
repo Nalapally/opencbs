@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using OpenCBS.ArchitectureV2.Interface.Presenter;
 using OpenCBS.CoreDomain.Contracts.Loans.Installments;
 
