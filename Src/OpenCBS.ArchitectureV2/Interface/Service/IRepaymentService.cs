@@ -6,6 +6,5 @@ namespace OpenCBS.ArchitectureV2.Interface.Service
     public interface IRepaymentService
     {
         Loan Repay();
-        Loan RepayAndSave();
     }
 }

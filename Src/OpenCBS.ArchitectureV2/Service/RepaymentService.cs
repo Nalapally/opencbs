@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using IronPython.Hosting;
 using Microsoft.Scripting.Hosting;
 using OpenCBS.ArchitectureV2.Interface.Service;
@@ -9,8 +8,6 @@ using OpenCBS.CoreDomain;
 using OpenCBS.CoreDomain.Contracts.Loans;
 using OpenCBS.CoreDomain.Events;
 using OpenCBS.Enums;
-using OpenCBS.Manager;
-using OpenCBS.Services;
 
 namespace OpenCBS.ArchitectureV2.Service
 {
@@ -22,54 +19,15 @@ namespace OpenCBS.ArchitectureV2.Service
         {
             var newSettings = (RepaymentSettings)Settings.Clone();
             var script = RunScript(newSettings.ScriptName);
-            if (newSettings.Amount == 0)
+            if (newSettings.DateChanged)
                 script.GetInitAmounts(newSettings);
-            if (newSettings.Principal == 0 && newSettings.Interest == 0 && newSettings.Penalty == 0 && newSettings.Commission == 0)
+            if (newSettings.AmountChanged)
                 script.GetAmounts(newSettings);
             script.Repay(newSettings);
             var events = GenerateRepaymentEvents(Settings, newSettings);
             newSettings.Loan.Events.Add(events);
-            return newSettings.Loan;
-        }
-
-        public Loan RepayAndSave()
-        {
-            var script = RunScript(Settings.ScriptName);
-            var newConfig = (RepaymentSettings)Settings.Clone();
-            script.Repay(newConfig);
-            var events = GenerateRepaymentEvents(Settings, newConfig);
-            newConfig.Loan.Events.Add(events);
-            using (var sqlTransaction = DatabaseConnection.GetConnection().BeginTransaction())
-            {
-                try
-                {
-                    var repayEvent = events.GetRepaymentEvents().First();
-                    ServicesProvider.GetInstance()
-                                    .GetEventProcessorServices()
-                                    .FireEvent(repayEvent, newConfig.Loan, sqlTransaction);
-                    ServicesProvider.GetInstance()
-                                    .GetContractServices()
-                                    .ArchiveInstallments(Settings.Loan, repayEvent, sqlTransaction);
-                    foreach (var installment in newConfig.Loan.InstallmentList)
-                    {
-                        var instalmentManager = new InstallmentManager(User.CurrentUser);
-                        instalmentManager.UpdateInstallment(installment, newConfig.Loan.Id, repayEvent.Id,
-                                                            sqlTransaction);
-                    }
-                    if (newConfig.Loan.AllInstallmentsRepaid)
-                        ServicesProvider.GetInstance()
-                                        .GetEventProcessorServices()
-                                        .FireEvent(newConfig.Loan.GetCloseEvent(Settings.Date), newConfig.Loan, sqlTransaction);
-                    //_loanManager.UpdateLoan(savedContract, sqlTransaction);
-                    sqlTransaction.Commit();
-                }
-                catch (Exception)
-                {
-                    sqlTransaction.Rollback();
-                    throw;
-                }
-            }
-            return newConfig.Loan;
+            Settings = newSettings;
+            return Settings.Loan;
         }
 
         private static dynamic RunScript(string scriptName)

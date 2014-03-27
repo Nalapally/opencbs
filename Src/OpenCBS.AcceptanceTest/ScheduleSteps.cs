@@ -178,6 +178,7 @@ namespace OpenCBS.AcceptanceTest
                 Settings = new RepaymentSettings
                     {
                         Amount = amount,
+                        AmountChanged = true,
                         Loan = _loan,
                         Date = date,
                         ScriptName = "NormalRepayment.py"
