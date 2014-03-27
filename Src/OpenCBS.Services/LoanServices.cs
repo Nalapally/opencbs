@@ -3039,9 +3039,34 @@ namespace OpenCBS.Services
             var options = new Dictionary<string, object>();
             options["Debug"] = true;
             var engine = Python.CreateEngine(options);
-            var assemby = typeof(Installment).Assembly;
+            var assemby = typeof (Installment).Assembly;
             engine.Runtime.LoadAssembly(assemby);
             return engine.ExecuteFile(file);
+        }
+
+        public Loan SaveInstallmentsAndRepaymentEvents(Loan loan)
+        {
+            using (var sqlTransaction = _loanManager.GetConnection().BeginTransaction())
+            {
+                try
+                {
+                    var repayEvent = loan.Events.GetRepaymentEvents().First(i => !i.IsFired);
+                    _ePs.FireEvent(repayEvent, loan, sqlTransaction);
+
+                    foreach (var installment in loan.InstallmentList)
+                        _instalmentManager.UpdateInstallment(installment, loan.Id, repayEvent.Id, sqlTransaction);
+                    if (loan.AllInstallmentsRepaid)
+                        _ePs.FireEvent(loan.GetCloseEvent(TimeProvider.Now), loan, sqlTransaction);
+
+                    sqlTransaction.Commit();
+                }
+                catch (Exception)
+                {
+                    sqlTransaction.Rollback();
+                    throw;
+                }
+            }
+            return loan;
         }
     }
 }
