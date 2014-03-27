@@ -20,7 +20,6 @@ namespace OpenCBS.ArchitectureV2.Service
 
         public Loan Repay()
         {
-<<<<<<< HEAD
             var newSettings = (RepaymentSettings)Settings.Clone();
             var script = RunScript(newSettings.ScriptName);
             if (newSettings.DateChanged)
@@ -31,14 +30,6 @@ namespace OpenCBS.ArchitectureV2.Service
             var events = GenerateRepaymentEvents(Settings, newSettings);
             newSettings.Loan.Events.Add(events);
             Settings = newSettings;
-=======
-            var script = RunScript(Settings.ScriptName);
-            if (Settings.Amount == 0)
-                script.GetInitAmounts(Settings);
-            if (Settings.Principal == 0 && Settings.Interest == 0 && Settings.Penalty == 0 && Settings.Commission == 0)
-                script.GetAmounts(Settings);
-            script.Repay(Settings);
->>>>>>> Rebuild normal repayment using tests
             return Settings.Loan;
         }
 
