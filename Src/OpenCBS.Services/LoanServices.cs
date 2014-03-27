@@ -2960,16 +2960,16 @@ namespace OpenCBS.Services
             _loanManager.SetRepaymentModuleLastStartupDate(date);
         }
 
-        public Loan SaveInstallmentsAndRepaymentEvents(Loan loan)
+        public Loan SaveInstallmentsAndRepaymentEvents(Loan loan, List<Installment> installments, EventStock events)
         {
+            var repayEvent = events.GetRepaymentEvents().First(i => !i.IsFired);
             using (var sqlTransaction = _loanManager.GetConnection().BeginTransaction())
             {
                 try
                 {
-                    var repayEvent = loan.Events.GetRepaymentEvents().First(i => !i.IsFired);
                     _ePs.FireEvent(repayEvent, loan, sqlTransaction);
-
-                    foreach (var installment in loan.InstallmentList)
+                    ArchiveInstallments(loan, repayEvent, sqlTransaction);
+                    foreach (var installment in installments)
                         _instalmentManager.UpdateInstallment(installment, loan.Id, repayEvent.Id, sqlTransaction);
                     if (loan.AllInstallmentsRepaid)
                         _ePs.FireEvent(loan.GetCloseEvent(TimeProvider.Now), loan, sqlTransaction);
