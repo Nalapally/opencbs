@@ -20,13 +20,16 @@ namespace OpenCBS.ArchitectureV2.Service
 
         public Loan Repay()
         {
-            var script = RunScript(Settings.ScriptName);
-            if (Settings.Amount == 0)
-                script.GetInitAmounts(Settings);
-            if (Settings.Principal == 0 && Settings.Interest == 0 && Settings.Penalty == 0 && Settings.Commission == 0)
-                script.GetAmounts(Settings);
-            script.Repay(Settings);
-            return Settings.Loan;
+            var newSettings = (RepaymentSettings)Settings.Clone();
+            var script = RunScript(newSettings.ScriptName);
+            if (newSettings.Amount == 0)
+                script.GetInitAmounts(newSettings);
+            if (newSettings.Principal == 0 && newSettings.Interest == 0 && newSettings.Penalty == 0 && newSettings.Commission == 0)
+                script.GetAmounts(newSettings);
+            script.Repay(newSettings);
+            var events = GenerateRepaymentEvents(Settings, newSettings);
+            newSettings.Loan.Events.Add(events);
+            return newSettings.Loan;
         }
 
         public Loan RepayAndSave()
@@ -86,7 +89,7 @@ namespace OpenCBS.ArchitectureV2.Service
             foreach (var installment in oldConfig.Loan.InstallmentList)
             {
                 if (installment.IsRepaid) continue;
-                var newInstallment = newConfig.Loan.GetInstallment(installment.Number);
+                var newInstallment = newConfig.Loan.GetInstallment(installment.Number - 1);
                 if (newInstallment.CapitalRepayment != installment.CapitalRepayment)
                 {
                     events.Add(new RepaymentEvent
@@ -105,6 +108,7 @@ namespace OpenCBS.ArchitectureV2.Service
                         RepaymentType = OPaymentType.PartialPayment,
                         User = User.CurrentUser
                     });
+                    newInstallment.PaidDate = newConfig.Date;
                     break;
                 }
                 if (newInstallment.PaidCapital <= installment.PaidCapital &&
@@ -112,33 +116,39 @@ namespace OpenCBS.ArchitectureV2.Service
                     newInstallment.PaidFees <= installment.PaidFees &&
                     newInstallment.PaidCommissions <= installment.PaidCommissions) continue;
                 if (newInstallment.ExpectedDate > oldConfig.Date)
+                {
                     events.Add(new RepaymentEvent
-                    {
-                        Principal = newInstallment.PaidCapital - installment.PaidCapital,
-                        Interests = newInstallment.PaidInterests - installment.PaidInterests,
-                        Penalties = newInstallment.PaidFees - installment.PaidFees,
-                        Commissions = newInstallment.PaidCommissions - installment.PaidCommissions,
-                        InstallmentNumber = installment.Number,
-                        PastDueDays = 0,
-                        PaymentMethod = oldConfig.PaymentMethod,
-                        Comment = oldConfig.Comment,
-                        RepaymentType = OPaymentType.StandardPayment,
-                        User = User.CurrentUser
-                    });
+                        {
+                            Principal = newInstallment.PaidCapital - installment.PaidCapital,
+                            Interests = newInstallment.PaidInterests - installment.PaidInterests,
+                            Penalties = newInstallment.PaidFees - installment.PaidFees,
+                            Commissions = newInstallment.PaidCommissions - installment.PaidCommissions,
+                            InstallmentNumber = installment.Number,
+                            PastDueDays = 0,
+                            PaymentMethod = oldConfig.PaymentMethod,
+                            Comment = oldConfig.Comment,
+                            RepaymentType = OPaymentType.StandardPayment,
+                            User = User.CurrentUser
+                        });
+                    newInstallment.PaidDate = newConfig.Date;
+                }
                 else
+                {
                     events.Add(new BadLoanRepaymentEvent
-                    {
-                        Principal = newInstallment.PaidCapital - installment.PaidCapital,
-                        Interests = newInstallment.PaidInterests - installment.PaidInterests,
-                        Penalties = newInstallment.PaidFees - installment.PaidFees,
-                        Commissions = newInstallment.PaidCommissions - installment.PaidCommissions,
-                        InstallmentNumber = installment.Number,
-                        PastDueDays = (oldConfig.Date - newInstallment.ExpectedDate).Days,
-                        PaymentMethod = oldConfig.PaymentMethod,
-                        Comment = oldConfig.Comment,
-                        RepaymentType = OPaymentType.StandardPayment,
-                        User = User.CurrentUser
-                    });
+                        {
+                            Principal = newInstallment.PaidCapital - installment.PaidCapital,
+                            Interests = newInstallment.PaidInterests - installment.PaidInterests,
+                            Penalties = newInstallment.PaidFees - installment.PaidFees,
+                            Commissions = newInstallment.PaidCommissions - installment.PaidCommissions,
+                            InstallmentNumber = installment.Number,
+                            PastDueDays = (oldConfig.Date - newInstallment.ExpectedDate).Days,
+                            PaymentMethod = oldConfig.PaymentMethod,
+                            Comment = oldConfig.Comment,
+                            RepaymentType = OPaymentType.StandardPayment,
+                            User = User.CurrentUser
+                        });
+                    newInstallment.PaidDate = newConfig.Date;
+                }
             }
             return events;
         }
