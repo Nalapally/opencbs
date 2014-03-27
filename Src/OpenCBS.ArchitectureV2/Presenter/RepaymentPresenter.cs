@@ -52,6 +52,18 @@ namespace OpenCBS.ArchitectureV2.Presenter
             _view.Stop();
         }
 
+        public void OnDateChanged()
+        {
+            _repaymentService.Repay();
+            RefreshAmounts();
+        }
+
+        public void OnAmountChanged()
+        {
+            _repaymentService.Repay();
+            RefreshAmounts();
+        }
+
         public void OnRefresh()
         {
             if (_repaymentService.Settings.Principal == _view.Principal &&
@@ -102,6 +114,5 @@ namespace OpenCBS.ArchitectureV2.Presenter
             _view.Penalty = _repaymentService.Settings.Penalty;
             _view.Principal = _repaymentService.Settings.Principal;
         }
-
     }
 }
