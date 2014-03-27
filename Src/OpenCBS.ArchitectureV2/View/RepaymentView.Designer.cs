@@ -270,7 +270,6 @@
             this._repaymentConfigurationPanel.PerformLayout();
             this._schedulePanel.ResumeLayout(false);
             this.ResumeLayout(false);
-
         }
 
         #endregion
@@ -300,7 +299,5 @@
         private System.Windows.Forms.Label _paymentMethodLabel;
         private System.Windows.Forms.ComboBox _paymentMethodComboBox;
         private System.Windows.Forms.Label _descriptionLabel;
-
-
     }
 }
