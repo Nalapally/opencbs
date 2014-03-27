@@ -102,5 +102,6 @@ namespace OpenCBS.ArchitectureV2.Presenter
             _view.Penalty = _repaymentService.Settings.Penalty;
             _view.Principal = _repaymentService.Settings.Principal;
         }
+
     }
 }
