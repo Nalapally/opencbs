@@ -40,7 +40,7 @@ namespace OpenCBS.ArchitectureV2.Presenter
         public void OnRepay()
         {
             SetSettings();
-            _repaymentService.RepayAndSave();
+            _repaymentService.Repay();
             _view.Stop();
         }
 

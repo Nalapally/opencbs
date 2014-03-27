@@ -7,6 +7,5 @@ namespace OpenCBS.ArchitectureV2.Interface.Service
     {
         RepaymentSettings Settings { get; set; }
         Loan Repay();
-        Loan RepayAndSave();
     }
 }
