@@ -611,7 +611,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 103
  testRunner.Then("the schedule is", ((string)(null)), table6, "Then ");
 #line 124
- testRunner.When("I accrue_penalties 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I accrue_penalties 300", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 135
  testRunner.When("I repay 10000 on 20.08.2014 with 1000 for commission with 300 for penalties with " +
                     "3000 for interest", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");

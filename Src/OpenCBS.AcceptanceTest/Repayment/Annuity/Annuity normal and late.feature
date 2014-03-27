@@ -121,7 +121,7 @@ Scenario: Simple early repayment
 	# We would like to spread amounts as:
 	# 1. Commission = 1000
 
-	When I accrue_penalties 0
+	When I accrue_penalties 300
 
 	# 2. Penalties = 300
 	# 3. Interest = 3000
