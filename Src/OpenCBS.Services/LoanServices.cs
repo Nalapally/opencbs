@@ -2959,5 +2959,30 @@ namespace OpenCBS.Services
         {
             _loanManager.SetRepaymentModuleLastStartupDate(date);
         }
+
+        public Loan SaveInstallmentsAndRepaymentEvents(Loan loan)
+        {
+            using (var sqlTransaction = _loanManager.GetConnection().BeginTransaction())
+            {
+                try
+                {
+                    var repayEvent = loan.Events.GetRepaymentEvents().First(i => !i.IsFired);
+                    _ePs.FireEvent(repayEvent, loan, sqlTransaction);
+
+                    foreach (var installment in loan.InstallmentList)
+                        _instalmentManager.UpdateInstallment(installment, loan.Id, repayEvent.Id, sqlTransaction);
+                    if (loan.AllInstallmentsRepaid)
+                        _ePs.FireEvent(loan.GetCloseEvent(TimeProvider.Now), loan, sqlTransaction);
+
+                    sqlTransaction.Commit();
+                }
+                catch (Exception)
+                {
+                    sqlTransaction.Rollback();
+                    throw;
+                }
+            }
+            return loan;
+        }
     }
 }
