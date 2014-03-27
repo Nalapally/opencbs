@@ -51,6 +51,18 @@ namespace OpenCBS.ArchitectureV2.Presenter
             _view.Stop();
         }
 
+        public void OnDateChanged()
+        {
+            _repaymentService.Repay();
+            RefreshView();
+        }
+
+        public void OnAmountChanged()
+        {
+            _repaymentService.Repay();
+            RefreshView();
+        }
+
         public void OnRefresh()
         {
             if (_repaymentService.Settings.Principal == _view.Principal &&
@@ -93,6 +105,16 @@ namespace OpenCBS.ArchitectureV2.Presenter
         }
 
         private void RefreshAmounts()
+        {
+            _view.Loan = _repaymentService.Settings.Loan;
+            _view.Amount = _repaymentService.Settings.Amount;
+            _view.Commission = _repaymentService.Settings.Commission;
+            _view.Interest = _repaymentService.Settings.Interest;
+            _view.Penalty = _repaymentService.Settings.Penalty;
+            _view.Principal = _repaymentService.Settings.Principal;
+        }
+
+        private void RefreshView()
         {
             _view.Loan = _repaymentService.Settings.Loan;
             _view.Amount = _repaymentService.Settings.Amount;
