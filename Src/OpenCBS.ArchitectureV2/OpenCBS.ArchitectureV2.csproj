@@ -129,6 +129,12 @@
     <Compile Include="View\BaseView.Designer.cs">
       <DependentUpon>BaseView.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\RepaymentView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\RepaymentView.Designer.cs">
+      <DependentUpon>RepaymentView.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\UpgradeView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -162,6 +168,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="View\RepaymentView.resx">
+      <DependentUpon>RepaymentView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\UpgradeView.resx">
       <DependentUpon>UpgradeView.cs</DependentUpon>
       <SubType>Designer</SubType>
