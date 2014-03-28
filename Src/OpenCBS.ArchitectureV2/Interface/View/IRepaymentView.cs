@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using OpenCBS.ArchitectureV2.Interface.Presenter;
+using OpenCBS.CoreDomain.Contracts.Loans;
 using OpenCBS.CoreDomain.Contracts.Loans.Installments;
 
 namespace OpenCBS.ArchitectureV2.Interface.View
@@ -10,7 +11,7 @@ namespace OpenCBS.ArchitectureV2.Interface.View
         void Run();
         void Stop();
 
-        List<Installment> Installments { get; set; }
+        Loan Loan { set; }
         List<string> RepaymentScripts { get; set; }
         decimal Amount { get; set; }
         decimal Principal { get; set; }
