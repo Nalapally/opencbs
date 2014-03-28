@@ -25,6 +25,7 @@ namespace OpenCBS.ArchitectureV2.Presenter
         public void Run()
         {
             _view.Attach(this);
+            RefreshView();
             _view.Run();
         }
 

@@ -108,8 +108,15 @@ namespace OpenCBS.ArchitectureV2.View
 
         public string SelectedScript
         {
-            get { return _typeOfRepaymentComboBox.SelectedItem.ToString(); }
-            set { _typeOfRepaymentComboBox.SelectedItem = value; }
+            get
+            {
+                return "NormalRepayment.py";
+                //return _typeOfRepaymentComboBox.SelectedItem.ToString();
+            }
+            set
+            {
+                _typeOfRepaymentComboBox.SelectedItem = value;
+            }
         }
     }
 }
