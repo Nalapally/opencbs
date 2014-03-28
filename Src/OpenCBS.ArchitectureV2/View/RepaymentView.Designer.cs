@@ -75,6 +75,14 @@
             this._scheduleControl.Location = new System.Drawing.Point(0, 0);
             this._scheduleControl.Name = "_scheduleControl";
             // 
+            // _scheduleControl
+            // 
+            this._scheduleControl.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this._scheduleControl.Location = new System.Drawing.Point(0, 154);
+            this._scheduleControl.Name = "_scheduleControl";
+            this._scheduleControl.Size = new System.Drawing.Size(830, 381);
+            this._scheduleControl.TabIndex = 17;
+            // 
             // _typeOfRepaymentComboBox
             // 
             this._typeOfRepaymentComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
