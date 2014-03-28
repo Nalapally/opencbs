@@ -4132,7 +4132,7 @@ namespace OpenCBS.GUI.Clients
         {
             if (TechnicalSettings.NewRepaymentWindow)
             {
-                _applicationController.Execute(new ShowRepaymentViewCommandData());
+                _applicationController.Execute(new ShowRepaymentViewCommandData {Loan = _credit});
             }
             else
             {

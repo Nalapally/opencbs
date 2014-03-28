@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this._scheduleControl = new OpenCBS.Controls.ScheduleControl();
             this._typeOfRepaymentComboBox = new System.Windows.Forms.ComboBox();
             this._typeOfRepaymentLabel = new System.Windows.Forms.Label();
             this._commentRichTextBox = new System.Windows.Forms.RichTextBox();
@@ -45,9 +46,8 @@
             this._amountLabel = new System.Windows.Forms.Label();
             this._dateLabel = new System.Windows.Forms.Label();
             this._dateTimePicker = new System.Windows.Forms.DateTimePicker();
-            this._scheduleControl = new OpenCBS.Controls.ScheduleControl();
-            this._okButton = new System.Windows.Forms.Button();
             this._cancelButton = new System.Windows.Forms.Button();
+            this._okButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -97,6 +97,14 @@
             this.splitContainer1.SplitterDistance = 535;
             this.splitContainer1.TabIndex = 0;
             // 
+            // _scheduleControl
+            // 
+            this._scheduleControl.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this._scheduleControl.Location = new System.Drawing.Point(0, 154);
+            this._scheduleControl.Name = "_scheduleControl";
+            this._scheduleControl.Size = new System.Drawing.Size(830, 381);
+            this._scheduleControl.TabIndex = 17;
+            // 
             // _typeOfRepaymentComboBox
             // 
             this._typeOfRepaymentComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -136,6 +144,11 @@
             // 
             this._commissionNumericUpDown.DecimalPlaces = 2;
             this._commissionNumericUpDown.Location = new System.Drawing.Point(385, 78);
+            this._commissionNumericUpDown.Maximum = new decimal(new int[] {
+            1000000000,
+            0,
+            0,
+            0});
             this._commissionNumericUpDown.Name = "_commissionNumericUpDown";
             this._commissionNumericUpDown.Size = new System.Drawing.Size(120, 23);
             this._commissionNumericUpDown.TabIndex = 12;
@@ -153,6 +166,11 @@
             // 
             this._penaltyNumericUpDown.DecimalPlaces = 2;
             this._penaltyNumericUpDown.Location = new System.Drawing.Point(385, 49);
+            this._penaltyNumericUpDown.Maximum = new decimal(new int[] {
+            1000000000,
+            0,
+            0,
+            0});
             this._penaltyNumericUpDown.Name = "_penaltyNumericUpDown";
             this._penaltyNumericUpDown.Size = new System.Drawing.Size(120, 23);
             this._penaltyNumericUpDown.TabIndex = 10;
@@ -170,6 +188,11 @@
             // 
             this._interestNumericUpDown.DecimalPlaces = 2;
             this._interestNumericUpDown.Location = new System.Drawing.Point(91, 105);
+            this._interestNumericUpDown.Maximum = new decimal(new int[] {
+            1000000000,
+            0,
+            0,
+            0});
             this._interestNumericUpDown.Name = "_interestNumericUpDown";
             this._interestNumericUpDown.Size = new System.Drawing.Size(120, 23);
             this._interestNumericUpDown.TabIndex = 8;
@@ -187,6 +210,11 @@
             // 
             this._principalNumericUpDown.DecimalPlaces = 2;
             this._principalNumericUpDown.Location = new System.Drawing.Point(91, 76);
+            this._principalNumericUpDown.Maximum = new decimal(new int[] {
+            1000000000,
+            0,
+            0,
+            0});
             this._principalNumericUpDown.Name = "_principalNumericUpDown";
             this._principalNumericUpDown.Size = new System.Drawing.Size(120, 23);
             this._principalNumericUpDown.TabIndex = 6;
@@ -204,6 +232,11 @@
             // 
             this._amountNumericUpDown.DecimalPlaces = 2;
             this._amountNumericUpDown.Location = new System.Drawing.Point(91, 47);
+            this._amountNumericUpDown.Maximum = new decimal(new int[] {
+            1000000000,
+            0,
+            0,
+            0});
             this._amountNumericUpDown.Name = "_amountNumericUpDown";
             this._amountNumericUpDown.Size = new System.Drawing.Size(120, 23);
             this._amountNumericUpDown.TabIndex = 4;
@@ -234,23 +267,6 @@
             this._dateTimePicker.Size = new System.Drawing.Size(98, 23);
             this._dateTimePicker.TabIndex = 0;
             // 
-            // _scheduleControl
-            // 
-            this._scheduleControl.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this._scheduleControl.Location = new System.Drawing.Point(0, 154);
-            this._scheduleControl.Name = "_scheduleControl";
-            this._scheduleControl.Size = new System.Drawing.Size(830, 381);
-            this._scheduleControl.TabIndex = 17;
-            // 
-            // _okButton
-            // 
-            this._okButton.Location = new System.Drawing.Point(632, 14);
-            this._okButton.Name = "_okButton";
-            this._okButton.Size = new System.Drawing.Size(90, 30);
-            this._okButton.TabIndex = 0;
-            this._okButton.Text = "Ok";
-            this._okButton.UseVisualStyleBackColor = true;
-            // 
             // _cancelButton
             // 
             this._cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
@@ -260,6 +276,15 @@
             this._cancelButton.TabIndex = 1;
             this._cancelButton.Text = "Cancel";
             this._cancelButton.UseVisualStyleBackColor = true;
+            // 
+            // _okButton
+            // 
+            this._okButton.Location = new System.Drawing.Point(632, 14);
+            this._okButton.Name = "_okButton";
+            this._okButton.Size = new System.Drawing.Size(90, 30);
+            this._okButton.TabIndex = 0;
+            this._okButton.Text = "Ok";
+            this._okButton.UseVisualStyleBackColor = true;
             // 
             // RepaymentView
             // 
