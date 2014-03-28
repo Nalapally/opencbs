@@ -39,6 +39,7 @@ namespace OpenCBS.ArchitectureV2.Presenter
         {
             OnRefresh();
             _view.Attach(this);
+            RefreshView();
             _view.Run();
         }
 
