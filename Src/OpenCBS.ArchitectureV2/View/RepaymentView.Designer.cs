@@ -300,7 +300,5 @@
         private System.Windows.Forms.Label _paymentMethodLabel;
         private System.Windows.Forms.ComboBox _paymentMethodComboBox;
         private System.Windows.Forms.Label _descriptionLabel;
-
-
     }
 }
