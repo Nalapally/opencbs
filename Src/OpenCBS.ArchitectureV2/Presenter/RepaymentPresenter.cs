@@ -11,21 +11,13 @@ namespace OpenCBS.ArchitectureV2.Presenter
     {
         private readonly Loan _loan;
         private readonly IRepaymentView _view;
-        private readonly IErrorView _errorView;
         private readonly IRepaymentService _repaymentService;
-        private readonly IBackgroundTaskFactory _backgroundTaskFactory;
 
-        public RepaymentPresenter(
-            IRepaymentView view,
-            IErrorView errorView,
-            IRepaymentService repaymentService,
-            IBackgroundTaskFactory backgroundTaskFactory)
+        public RepaymentPresenter(IRepaymentView view, IRepaymentService repaymentService)
         {
             _view = view;
-            _errorView = errorView;
             _repaymentService = repaymentService;
             _loan = repaymentService.Settings.Loan.Copy();
-            _backgroundTaskFactory = backgroundTaskFactory;
         }
 
         public object View { get { return _view; } }
@@ -33,13 +25,14 @@ namespace OpenCBS.ArchitectureV2.Presenter
         public void Run()
         {
             _view.Attach(this);
+            _view.Run();
         }
 
         public void OnRepay()
         {
             ServicesProvider.GetInstance()
                             .GetContractServices()
-                            .SaveInstallmentsAndRepaymentEvents(_loan, _view.Installments,
+                            .SaveInstallmentsAndRepaymentEvents(_loan, _repaymentService.Settings.Loan.InstallmentList,
                                                                 _repaymentService.Settings.Loan.Events);
             _view.Stop();
         }
@@ -87,7 +80,7 @@ namespace OpenCBS.ArchitectureV2.Presenter
 
         private void RefreshView()
         {
-            _view.Installments = _repaymentService.Settings.Loan.InstallmentList;
+            _view.Loan = _repaymentService.Settings.Loan;
             _view.Amount = _repaymentService.Settings.Amount;
             _view.Commission = _repaymentService.Settings.Commission;
             _view.Interest = _repaymentService.Settings.Interest;

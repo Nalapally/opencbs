@@ -1,5 +1,8 @@
 ﻿using OpenCBS.ArchitectureV2.CommandData;
 using OpenCBS.ArchitectureV2.Interface;
+using OpenCBS.ArchitectureV2.Presenter;
+using OpenCBS.ArchitectureV2.Service;
+using OpenCBS.ArchitectureV2.View;
 
 namespace OpenCBS.ArchitectureV2.Command
 {
@@ -7,7 +10,8 @@ namespace OpenCBS.ArchitectureV2.Command
     {
         public void Execute(ShowRepaymentViewCommandData commandData)
         {
-            throw new System.NotImplementedException();
+            var presenter = new RepaymentPresenter(new RepaymentView(), new RepaymentService());
+            presenter.Run();
         }
     }
 }
