@@ -15,11 +15,6 @@ namespace OpenCBS.ArchitectureV2.Service
     {
         public RepaymentSettings Settings { get; set; }
 
-        public RepaymentService(Loan loan)
-        {
-            Settings = new RepaymentSettings {Loan = loan};
-        }
-
         public Loan Repay()
         {
             var newSettings = (RepaymentSettings)Settings.Clone();
