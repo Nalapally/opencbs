@@ -23,13 +23,13 @@ namespace OpenCBS.ArchitectureV2.View
 
         public void Attach(IRepaymentPresenterCallbacks presenterCallbacks)
         {
-            _amountNumericUpDown.TextChanged += (sender, e) => presenterCallbacks.OnAmountChanged();
+            _amountNumericUpDown.ValueChanged += (sender, e) => presenterCallbacks.OnAmountChanged();
             _dateTimePicker.ValueChanged += (sender, e) => presenterCallbacks.OnDateChanged();
             _principalNumericUpDown.ValueChanged += (sender, e) => presenterCallbacks.OnRefresh();
             _interestNumericUpDown.ValueChanged += (sender, e) => presenterCallbacks.OnRefresh();
             _penaltyNumericUpDown.ValueChanged += (sender, e) => presenterCallbacks.OnRefresh();
             _commissionNumericUpDown.ValueChanged += (sender, e) => presenterCallbacks.OnRefresh();
-            _typeOfRepaymentComboBox.SelectedValueChanged += (sender, e) => presenterCallbacks.OnRefresh();
+            _typeOfRepaymentComboBox.SelectedIndexChanged += (sender, e) => presenterCallbacks.OnRefresh();
             _okButton.Click += (sender, e) => presenterCallbacks.OnRepay();
             _cancelButton.Click += (sender, e) => presenterCallbacks.OnCancel();
         }

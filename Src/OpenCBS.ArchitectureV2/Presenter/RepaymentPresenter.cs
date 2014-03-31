@@ -1,5 +1,4 @@
-﻿using OpenCBS.ArchitectureV2.Interface;
-using OpenCBS.ArchitectureV2.Interface.Presenter;
+﻿using OpenCBS.ArchitectureV2.Interface.Presenter;
 using OpenCBS.ArchitectureV2.Interface.Service;
 using OpenCBS.ArchitectureV2.Interface.View;
 using OpenCBS.CoreDomain.Contracts.Loans;
@@ -17,15 +16,17 @@ namespace OpenCBS.ArchitectureV2.Presenter
         {
             _view = view;
             _repaymentService = repaymentService;
-            _loan = repaymentService.Settings.Loan.Copy();
+            _loan = _repaymentService.Settings.Loan.Copy();
         }
 
         public object View { get { return _view; } }
 
         public void Run()
         {
+            SetSettings(true, false);
+            _repaymentService.Repay();
+            RefreshAmounts();
             _view.Attach(this);
-            RefreshView();
             _view.Run();
         }
 
@@ -33,40 +34,39 @@ namespace OpenCBS.ArchitectureV2.Presenter
         {
             ServicesProvider.GetInstance()
                             .GetContractServices()
-                            .SaveInstallmentsAndRepaymentEvents(_loan, _repaymentService.Settings.Loan.InstallmentList,
-                                                                _repaymentService.Settings.Loan.Events);
+                            .SaveInstallmentsAndRepaymentEvents(_repaymentService.Settings.Loan);
             _view.Stop();
         }
 
         public void OnDateChanged()
         {
             SetSettings(true, false);
-            _repaymentService.Repay();
-            RefreshView();
+            _view.Loan = _repaymentService.Repay();
+            RefreshAmounts();
         }
 
         public void OnAmountChanged()
         {
             SetSettings(false, true);
             _repaymentService.Repay();
-            RefreshView();
+            RefreshAmounts();
         }
 
         public void OnRefresh()
         {
             SetSettings(false, false);
             _repaymentService.Repay();
-            RefreshView();
+            RefreshAmounts();
         }
 
         public void OnCancel()
         {
-            _repaymentService.Settings.Loan = _loan;
             _view.Stop();
         }
 
         private void SetSettings(bool dateChanged, bool amountChanged)
         {
+            _repaymentService.Settings.Loan = _loan.Copy();
             _repaymentService.Settings.Comment = _view.Comment;
             _repaymentService.Settings.Amount = _view.Amount;
             _repaymentService.Settings.AmountChanged = amountChanged;
@@ -79,7 +79,7 @@ namespace OpenCBS.ArchitectureV2.Presenter
             _repaymentService.Settings.ScriptName = _view.SelectedScript;
         }
 
-        private void RefreshView()
+        private void RefreshAmounts()
         {
             _view.Loan = _repaymentService.Settings.Loan;
             _view.Amount = _repaymentService.Settings.Amount;
