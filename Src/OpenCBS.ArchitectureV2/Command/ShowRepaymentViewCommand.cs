@@ -11,7 +11,10 @@ namespace OpenCBS.ArchitectureV2.Command
         public void Execute(ShowRepaymentViewCommandData commandData)
         {
             var presenter = new RepaymentPresenter(new RepaymentView(),
-                                                   new RepaymentService(commandData.Loan));
+                                                   new RepaymentService
+                                                       {
+                                                           Settings = new RepaymentSettings {Loan = commandData.Loan}
+                                                       });
             presenter.Run();
         }
     }

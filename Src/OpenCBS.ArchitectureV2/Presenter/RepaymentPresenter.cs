@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿﻿using System.Linq;
 using OpenCBS.ArchitectureV2.Interface.Presenter;
 using OpenCBS.ArchitectureV2.Interface.Service;
 using OpenCBS.ArchitectureV2.Interface.View;
@@ -39,7 +39,6 @@ namespace OpenCBS.ArchitectureV2.Presenter
         {
             OnRefresh();
             _view.Attach(this);
-            RefreshView();
             _view.Run();
         }
 
@@ -55,13 +54,13 @@ namespace OpenCBS.ArchitectureV2.Presenter
         public void OnDateChanged()
         {
             _repaymentService.Repay();
-            RefreshView();
+            RefreshAmounts();
         }
 
         public void OnAmountChanged()
         {
             _repaymentService.Repay();
-            RefreshView();
+            RefreshAmounts();
         }
 
         public void OnRefresh()
@@ -106,16 +105,6 @@ namespace OpenCBS.ArchitectureV2.Presenter
         }
 
         private void RefreshAmounts()
-        {
-            _view.Loan = _repaymentService.Settings.Loan;
-            _view.Amount = _repaymentService.Settings.Amount;
-            _view.Commission = _repaymentService.Settings.Commission;
-            _view.Interest = _repaymentService.Settings.Interest;
-            _view.Penalty = _repaymentService.Settings.Penalty;
-            _view.Principal = _repaymentService.Settings.Principal;
-        }
-
-        private void RefreshView()
         {
             _view.Loan = _repaymentService.Settings.Loan;
             _view.Amount = _repaymentService.Settings.Amount;
