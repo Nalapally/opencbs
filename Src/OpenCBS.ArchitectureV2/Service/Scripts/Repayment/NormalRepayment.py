@@ -50,6 +50,7 @@ def Repay(settings):
     interest = settings.Interest
     penalty = settings.Penalty
     commission = settings.Commission
+    settings.Amount = principal + interest + penalty + commission
     installments = settings.Loan.InstallmentList
     while len(installments) > i and (principal > 0 or interest > 0 or penalty > 0 or commission > 0):       
         installment = installments[i]

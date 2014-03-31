@@ -112,7 +112,7 @@
             this._typeOfRepaymentComboBox.Location = new System.Drawing.Point(385, 110);
             this._typeOfRepaymentComboBox.Name = "_typeOfRepaymentComboBox";
             this._typeOfRepaymentComboBox.Size = new System.Drawing.Size(121, 23);
-            this._typeOfRepaymentComboBox.TabIndex = 16;
+            this._typeOfRepaymentComboBox.TabIndex = 6;
             // 
             // _typeOfRepaymentLabel
             // 
@@ -128,7 +128,7 @@
             this._commentRichTextBox.Location = new System.Drawing.Point(637, 46);
             this._commentRichTextBox.Name = "_commentRichTextBox";
             this._commentRichTextBox.Size = new System.Drawing.Size(174, 52);
-            this._commentRichTextBox.TabIndex = 14;
+            this._commentRichTextBox.TabIndex = 5;
             this._commentRichTextBox.Text = "";
             // 
             // _commentLabel
@@ -151,7 +151,7 @@
             0});
             this._commissionNumericUpDown.Name = "_commissionNumericUpDown";
             this._commissionNumericUpDown.Size = new System.Drawing.Size(120, 23);
-            this._commissionNumericUpDown.TabIndex = 12;
+            this._commissionNumericUpDown.TabIndex = 4;
             // 
             // _commissionLabel
             // 
@@ -173,7 +173,7 @@
             0});
             this._penaltyNumericUpDown.Name = "_penaltyNumericUpDown";
             this._penaltyNumericUpDown.Size = new System.Drawing.Size(120, 23);
-            this._penaltyNumericUpDown.TabIndex = 10;
+            this._penaltyNumericUpDown.TabIndex = 3;
             // 
             // _penaltyLabel
             // 
@@ -195,7 +195,7 @@
             0});
             this._interestNumericUpDown.Name = "_interestNumericUpDown";
             this._interestNumericUpDown.Size = new System.Drawing.Size(120, 23);
-            this._interestNumericUpDown.TabIndex = 8;
+            this._interestNumericUpDown.TabIndex = 2;
             // 
             // _interestLabel
             // 
@@ -217,7 +217,7 @@
             0});
             this._principalNumericUpDown.Name = "_principalNumericUpDown";
             this._principalNumericUpDown.Size = new System.Drawing.Size(120, 23);
-            this._principalNumericUpDown.TabIndex = 6;
+            this._principalNumericUpDown.TabIndex = 1;
             // 
             // _principalLabel
             // 
@@ -239,7 +239,7 @@
             0});
             this._amountNumericUpDown.Name = "_amountNumericUpDown";
             this._amountNumericUpDown.Size = new System.Drawing.Size(120, 23);
-            this._amountNumericUpDown.TabIndex = 4;
+            this._amountNumericUpDown.TabIndex = 0;
             // 
             // _amountLabel
             // 
@@ -265,7 +265,7 @@
             this._dateTimePicker.Location = new System.Drawing.Point(71, 12);
             this._dateTimePicker.Name = "_dateTimePicker";
             this._dateTimePicker.Size = new System.Drawing.Size(98, 23);
-            this._dateTimePicker.TabIndex = 0;
+            this._dateTimePicker.TabIndex = 7;
             // 
             // _cancelButton
             // 
