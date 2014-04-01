@@ -77,11 +77,11 @@
             // 
             // _scheduleControl
             // 
-            this._scheduleControl.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this._scheduleControl.Location = new System.Drawing.Point(0, 154);
+            this._scheduleControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._scheduleControl.Location = new System.Drawing.Point(0, 0);
             this._scheduleControl.Name = "_scheduleControl";
-            this._scheduleControl.Size = new System.Drawing.Size(830, 381);
-            this._scheduleControl.TabIndex = 17;
+            this._scheduleControl.Size = new System.Drawing.Size(830, 343);
+            this._scheduleControl.TabIndex = 39;
             // 
             // _typeOfRepaymentComboBox
             // 
