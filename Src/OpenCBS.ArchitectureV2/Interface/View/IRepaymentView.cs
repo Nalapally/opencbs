@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using OpenCBS.ArchitectureV2.Interface.Presenter;
 using OpenCBS.CoreDomain.Contracts.Loans;
-using OpenCBS.CoreDomain.Contracts.Loans.Installments;
 
 namespace OpenCBS.ArchitectureV2.Interface.View
 {
@@ -12,16 +11,17 @@ namespace OpenCBS.ArchitectureV2.Interface.View
         void Stop();
 
         Loan Loan { set; }
-        List<string> RepaymentScripts { get; set; }
+        Dictionary<string, string> RepaymentScripts { set; }
         decimal Amount { get; set; }
         decimal Principal { get; set; }
+        decimal PrincipalMax { get; set; }
         decimal Interest { get; set; }
         decimal Penalty { get; set; }
         decimal Commission { get; set; }
         DateTime Date { get; set; }
         bool OkButtonEnabled { get; set; }
         string Comment { get; set; }
-        string Title { get; set; }
-        string SelectedScript { get; set; }
+        string Title { set; }
+        string SelectedScript { get; }
     }
 }
