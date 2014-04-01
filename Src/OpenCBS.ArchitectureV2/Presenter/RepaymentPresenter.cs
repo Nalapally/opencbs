@@ -17,15 +17,16 @@ namespace OpenCBS.ArchitectureV2.Presenter
             _view = view;
             _repaymentService = repaymentService;
             _loan = _repaymentService.Settings.Loan.Copy();
+            _view.PrincipalMax = _loan.OLB;
+            _view.RepaymentScripts = _repaymentService.GetAllRepaymentScriptsWithDecription();
+            _view.Title = _loan.Project.Client.Name + " " + _loan.Code;
         }
 
         public object View { get { return _view; } }
 
         public void Run()
         {
-            SetSettings(true, false);
-            _repaymentService.Repay();
-            RefreshAmounts();
+            OnRefresh();
             _view.Attach(this);
             _view.Run();
         }
@@ -38,45 +39,42 @@ namespace OpenCBS.ArchitectureV2.Presenter
             _view.Stop();
         }
 
-        public void OnDateChanged()
-        {
-            SetSettings(true, false);
-            _view.Loan = _repaymentService.Repay();
-            RefreshAmounts();
-        }
-
-        public void OnAmountChanged()
-        {
-            SetSettings(false, true);
-            _repaymentService.Repay();
-            RefreshAmounts();
-        }
-
         public void OnRefresh()
         {
-            SetSettings(false, false);
+            if (_repaymentService.Settings.Principal == _view.Principal &&
+                _repaymentService.Settings.Interest == _view.Interest &&
+                _repaymentService.Settings.Penalty == _view.Penalty &&
+                _repaymentService.Settings.Commission == _view.Commission &&
+                _repaymentService.Settings.Comment == _view.Comment &&
+                _repaymentService.Settings.ScriptName == _view.SelectedScript &&
+                _repaymentService.Settings.Date == _view.Date &&
+                _repaymentService.Settings.Amount == _view.Amount) return;
+            if (_repaymentService.Settings.Date != _view.Date)
+            {
+                _repaymentService.Settings.DateChanged = true;
+                _repaymentService.Settings.Date = _view.Date;
+            }
+            if (_repaymentService.Settings.Amount != _view.Amount)
+            {
+                _repaymentService.Settings.AmountChanged = true;
+                _repaymentService.Settings.Amount = _view.Amount;
+            }
+            _repaymentService.Settings.Loan = _loan.Copy();
+            _repaymentService.Settings.Comment = _view.Comment;
+            _repaymentService.Settings.Commission = _view.Commission;
+            _repaymentService.Settings.Interest = _view.Interest;
+            _repaymentService.Settings.Penalty = _view.Penalty;
+            _repaymentService.Settings.Principal = _view.Principal;
+            _repaymentService.Settings.ScriptName = _view.SelectedScript;
             _repaymentService.Repay();
+            _repaymentService.Settings.DateChanged = false;
+            _repaymentService.Settings.AmountChanged = false;
             RefreshAmounts();
         }
 
         public void OnCancel()
         {
             _view.Stop();
-        }
-
-        private void SetSettings(bool dateChanged, bool amountChanged)
-        {
-            _repaymentService.Settings.Loan = _loan.Copy();
-            _repaymentService.Settings.Comment = _view.Comment;
-            _repaymentService.Settings.Amount = _view.Amount;
-            _repaymentService.Settings.AmountChanged = amountChanged;
-            _repaymentService.Settings.Commission = _view.Commission;
-            _repaymentService.Settings.Date = _view.Date;
-            _repaymentService.Settings.DateChanged = dateChanged;
-            _repaymentService.Settings.Interest = _view.Interest;
-            _repaymentService.Settings.Penalty = _view.Penalty;
-            _repaymentService.Settings.Principal = _view.Principal;
-            _repaymentService.Settings.ScriptName = _view.SelectedScript;
         }
 
         private void RefreshAmounts()
