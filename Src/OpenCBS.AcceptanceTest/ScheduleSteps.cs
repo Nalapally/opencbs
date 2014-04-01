@@ -181,7 +181,7 @@ namespace OpenCBS.AcceptanceTest
                         Amount = amount,
                         AmountChanged = true,
                         Date = date,
-                        ScriptName = "\\Repayment\\NormalRepayment.py"
+                        ScriptName = "NormalRepayment.py"
                     }
             };
             _loan = re.Repay();
@@ -221,7 +221,7 @@ namespace OpenCBS.AcceptanceTest
                     Penalty = penalty,
                     Interest = interest,
                     Principal = amount - commission - penalty - interest,
-                    ScriptName = "\\Repayment\\NormalRepayment.py"
+                    ScriptName = "NormalRepayment.py"
                 }
             };
             _loan = re.Repay();

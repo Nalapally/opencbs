@@ -1,11 +1,7 @@
 # -*- coding: utf-8 -*-
 
-<<<<<<< HEAD:Src/OpenCBS.ArchitectureV2/Service/Scripts/Repayment/1_NormalRepayment.py
-def GetType():
-=======
 def GetDescription():
->>>>>>> Change some logic in repay window:Src/OpenCBS.ArchitectureV2/Service/Scripts/Repayment/NormalRepayment.py
-    return "Нормальный"
+    return "Ненормальный"
 
 def RepayCommission(installment):
     global commission
