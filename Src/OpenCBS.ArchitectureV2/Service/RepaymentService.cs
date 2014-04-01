@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using IronPython.Hosting;
 using Microsoft.Scripting.Hosting;
 using OpenCBS.ArchitectureV2.Interface.Service;
@@ -30,6 +31,21 @@ namespace OpenCBS.ArchitectureV2.Service
             return Settings.Loan;
         }
 
+        public Dictionary<string, string> GetAllRepaymentScriptsWithDecription()
+        {
+            var scripts = new Dictionary<string, string>();
+            var files = Directory
+                .EnumerateFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Scripts\\Repayment\\"), "*.py",
+                                SearchOption.AllDirectories)
+                .Select(Path.GetFileName);
+            foreach (var file in files)
+            {
+                var script = RunScript(file);
+                scripts.Add(file, script.GetDescription());
+            }
+            return scripts;
+        }
+
         private static dynamic RunScript(string scriptName)
         {
             var options = new Dictionary<string, object>();
@@ -37,7 +53,7 @@ namespace OpenCBS.ArchitectureV2.Service
             options["Debug"] = true;
 #endif
             ScriptEngine engine = Python.CreateEngine(options);
-            var file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Scripts\\" + scriptName);
+            var file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Scripts\\Repayment\\" + scriptName);
             return engine.ExecuteFile(file);
         }
 

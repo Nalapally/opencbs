@@ -1,16 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using OpenCBS.ArchitectureV2.Interface.Presenter;
 using OpenCBS.ArchitectureV2.Interface.View;
 using OpenCBS.CoreDomain.Contracts.Loans;
-using OpenCBS.CoreDomain.Contracts.Loans.Installments;
 
 namespace OpenCBS.ArchitectureV2.View
 {
@@ -23,12 +16,12 @@ namespace OpenCBS.ArchitectureV2.View
 
         public void Attach(IRepaymentPresenterCallbacks presenterCallbacks)
         {
-            _amountNumericUpDown.ValueChanged += (sender, e) => presenterCallbacks.OnAmountChanged();
-            _dateTimePicker.ValueChanged += (sender, e) => presenterCallbacks.OnDateChanged();
-            _principalNumericUpDown.ValueChanged += (sender, e) => presenterCallbacks.OnRefresh();
-            _interestNumericUpDown.ValueChanged += (sender, e) => presenterCallbacks.OnRefresh();
-            _penaltyNumericUpDown.ValueChanged += (sender, e) => presenterCallbacks.OnRefresh();
-            _commissionNumericUpDown.ValueChanged += (sender, e) => presenterCallbacks.OnRefresh();
+            _amountNumericUpDown.LostFocus += (sender, e) => presenterCallbacks.OnRefresh();
+            _dateTimePicker.LostFocus += (sender, e) => presenterCallbacks.OnRefresh();
+            _principalNumericUpDown.LostFocus += (sender, e) => presenterCallbacks.OnRefresh();
+            _interestNumericUpDown.LostFocus += (sender, e) => presenterCallbacks.OnRefresh();
+            _penaltyNumericUpDown.LostFocus += (sender, e) => presenterCallbacks.OnRefresh();
+            _commissionNumericUpDown.LostFocus += (sender, e) => presenterCallbacks.OnRefresh();
             _typeOfRepaymentComboBox.SelectedIndexChanged += (sender, e) => presenterCallbacks.OnRefresh();
             _okButton.Click += (sender, e) => presenterCallbacks.OnRepay();
             _cancelButton.Click += (sender, e) => presenterCallbacks.OnCancel();
@@ -49,10 +42,14 @@ namespace OpenCBS.ArchitectureV2.View
             set { _scheduleControl.SetScheduleFor(value); }
         }
 
-        public List<string> RepaymentScripts
+        public Dictionary<string, string> RepaymentScripts
         {
-            get { return (List<string>) _typeOfRepaymentComboBox.DataSource; }
-            set { _typeOfRepaymentComboBox.DataSource = value; }
+            set
+            {
+                _typeOfRepaymentComboBox.DataSource = value.ToList();
+                _typeOfRepaymentComboBox.ValueMember = "Key";
+                _typeOfRepaymentComboBox.DisplayMember = "Value";
+            }
         }
 
         public decimal Amount
@@ -65,6 +62,12 @@ namespace OpenCBS.ArchitectureV2.View
         {
             get { return _principalNumericUpDown.Value; }
             set { _principalNumericUpDown.Value = value; }
+        }
+
+        public decimal PrincipalMax
+        {
+            get { return _penaltyNumericUpDown.Maximum; }
+            set { _principalNumericUpDown.Maximum = value; }
         }
 
         public decimal Interest
@@ -102,21 +105,12 @@ namespace OpenCBS.ArchitectureV2.View
 
         public string Title
         {
-            get { return Text; }
             set { Text = value; }
         }
 
         public string SelectedScript
         {
-            get
-            {
-                return "NormalRepayment.py";
-                //return _typeOfRepaymentComboBox.SelectedItem.ToString();
-            }
-            set
-            {
-                _typeOfRepaymentComboBox.SelectedItem = value;
-            }
+            get { return _typeOfRepaymentComboBox.SelectedValue.ToString(); }
         }
     }
 }

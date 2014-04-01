@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+def GetDescription():
+    return "Нормальный"
+
 def RepayCommission(installment):
     global commission
     if commission > 0:
@@ -63,19 +66,22 @@ def Repay(settings):
 # вызывается когда изменяется дата оплаты и при открытии окна оплаты(автоматический режим)
 # меняет суммы к оплате по ОД, %, пени и комиссии
 def GetInitAmounts(settings):    
-    i = 0
+    i = settings.Loan.GetFirstUnpaidInstallment().Number - 1
     installments = settings.Loan.InstallmentList
-    installment = installments[i]
     principal = 0
     interest = 0
     penalty = settings.Loan.CalculateDailyAccrualUnpaidPenalties(settings.Date)
     commission = 0
-    while len(installments) > i and installment.ExpectedDate <= settings.Date:       
+    while True:       
         installment = installments[i]
+        if installment.ExpectedDate > settings.Date:
+            break
         principal += installment.CapitalRepayment.Value - installment.PaidCapital.Value
         interest += installment.InterestsRepayment.Value - installment.PaidInterests.Value
         commission += installment.CommissionsUnpaid.Value
         i += 1
+        if len(installments) <= i:
+            break
     settings.Principal = principal
     settings.Interest = interest
     settings.Penalty = penalty
@@ -86,7 +92,7 @@ def GetInitAmounts(settings):
 # меняет суммы к оплате по ОД, %, пени и комиссии
 def GetAmounts(settings):
     amount = settings.Amount
-    i = 0
+    i = settings.Loan.GetFirstUnpaidInstallment().Number - 1
     installments = settings.Loan.InstallmentList
     installment = installments[i]
     principal = 0
@@ -96,7 +102,7 @@ def GetAmounts(settings):
     if amount < penalty:
         penalty = amount
     amount -= penalty
-    while len(installments) > i and amount > 0:       
+    while True:       
         installment = installments[i]
 
         unpaid = installment.CommissionsUnpaid.Value
@@ -104,20 +110,28 @@ def GetAmounts(settings):
             unpaid = amount
         commission += unpaid
         amount -= unpaid
+        if amount <= 0:
+            break
 
         unpaid = installment.InterestsRepayment.Value - installment.PaidInterests.Value
         if unpaid > amount:
             unpaid = amount
         interest += unpaid
         amount -= unpaid
+        if amount <= 0:
+            break
 
         unpaid = installment.CapitalRepayment.Value - installment.PaidCapital.Value
         if unpaid > amount:
             unpaid = amount
         principal += unpaid
         amount -= unpaid
+        if amount <= 0:
+            break
 
         i += 1
+        if len(installments) <= i:
+            break
     settings.Principal = principal
     settings.Interest = interest
     settings.Penalty = penalty
