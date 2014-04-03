@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenCBS.ArchitectureV2.Interface.Presenter;
 using OpenCBS.ArchitectureV2.Interface.View;
+using OpenCBS.CoreDomain.Accounting;
 using OpenCBS.CoreDomain.Contracts.Loans;
 
 namespace OpenCBS.ArchitectureV2.View
@@ -49,6 +50,16 @@ namespace OpenCBS.ArchitectureV2.View
                 _typeOfRepaymentComboBox.DataSource = value.ToList();
                 _typeOfRepaymentComboBox.ValueMember = "Key";
                 _typeOfRepaymentComboBox.DisplayMember = "Value";
+            }
+        }
+
+        public List<PaymentMethod> PaymentMethods
+        {
+            set
+            {
+                _paymentMethodComboBox.DataSource = value;
+                _paymentMethodComboBox.ValueMember = "Id";
+                _paymentMethodComboBox.DisplayMember = "Name";
             }
         }
 
@@ -111,6 +122,17 @@ namespace OpenCBS.ArchitectureV2.View
         public string SelectedScript
         {
             get { return _typeOfRepaymentComboBox.SelectedValue.ToString(); }
+        }
+
+        public PaymentMethod SelectedPaymentMethod
+        {
+            get { return (PaymentMethod) _paymentMethodComboBox.SelectedItem; }
+            set { _paymentMethodComboBox.SelectedItem = value; }
+        }
+
+        public string Description
+        {
+            set { _descriptionLabel.Text = value; }
         }
     }
 }
