@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using OpenCBS.ArchitectureV2.Interface.Presenter;
+using OpenCBS.CoreDomain.Accounting;
 using OpenCBS.CoreDomain.Contracts.Loans;
 
 namespace OpenCBS.ArchitectureV2.Interface.View
@@ -12,6 +13,7 @@ namespace OpenCBS.ArchitectureV2.Interface.View
 
         Loan Loan { set; }
         Dictionary<string, string> RepaymentScripts { set; }
+        List<PaymentMethod> PaymentMethods { set; }
         decimal Amount { get; set; }
         decimal Principal { get; set; }
         decimal PrincipalMax { get; set; }
@@ -23,5 +25,7 @@ namespace OpenCBS.ArchitectureV2.Interface.View
         string Comment { get; set; }
         string Title { set; }
         string SelectedScript { get; }
+        PaymentMethod SelectedPaymentMethod { get; set; }
+        string Description { set; }
     }
 }

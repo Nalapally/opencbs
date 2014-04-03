@@ -611,6 +611,33 @@ namespace OpenCBS.Services
 	        }
 	    }
 
+	    public List<SavingEvent> Withdraw(ISavingsContract pSaving, DateTime pDate, OCurrency pWithdrawAmount,
+	                                      string pDescription, User pUser, Teller teller, SqlTransaction sqlTransaction)
+	    {
+	        ValidateWithdrawal(pWithdrawAmount, pSaving, pDate, pDescription, pUser, teller);
+
+	        List<SavingEvent> events = pSaving.Withdraw(pWithdrawAmount, pDate, pDescription, pUser, false, teller);
+	        foreach (SavingEvent savingEvent in events)
+	        {
+	            _ePS.FireEvent(savingEvent, pSaving, sqlTransaction);
+	        }
+
+	        // Charge overdraft fees if the balance is negative
+	        if (pSaving is SavingBookContract)
+	        {
+	            if (pSaving.GetBalance() < 0 && !((SavingBookContract) pSaving).InOverdraft)
+	            {
+	                SavingEvent overdraftFeeEvent = pSaving.ChargeOverdraftFee(pDate, pUser);
+	                _ePS.FireEvent(overdraftFeeEvent, pSaving, sqlTransaction);
+
+	                ((SavingBookContract) pSaving).InOverdraft = true;
+	                UpdateOverdraftStatus(pSaving.Id, true);
+	            }
+	        }
+
+	        return events;
+	    }
+
 	    private void ValidateWithdrawal(OCurrency pWithdrawAmount, ISavingsContract pSaving, DateTime pDate, string pDescription, User pUser, Teller teller)
 	    {
 	        if (!IsWithdrawAmountCorrect(pWithdrawAmount, pSaving))

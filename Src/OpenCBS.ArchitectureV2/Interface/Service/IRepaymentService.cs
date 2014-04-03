@@ -7,6 +7,6 @@ namespace OpenCBS.ArchitectureV2.Interface.Service
     public interface IRepaymentService
     {
         Loan Repay();
-        Dictionary<string, string> GetAllRepaymentScriptsWithDecription();
+        Dictionary<string, string> GetAllRepaymentScriptsWithTypes();
     }
 }
