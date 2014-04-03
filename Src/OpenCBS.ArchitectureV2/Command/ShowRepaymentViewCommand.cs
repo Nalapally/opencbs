@@ -14,7 +14,7 @@ namespace OpenCBS.ArchitectureV2.Command
                                                    new RepaymentService
                                                        {
                                                            Settings =
-                                                               new RepaymentSettings {Loan = commandData.Loan.Copy()}
+                                                               new RepaymentSettings {Loan = commandData.Loan}
                                                        });
             presenter.Run();
         }

@@ -74,8 +74,6 @@
             this._scheduleControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this._scheduleControl.Location = new System.Drawing.Point(0, 0);
             this._scheduleControl.Name = "_scheduleControl";
-            this._scheduleControl.Size = new System.Drawing.Size(830, 343);
-            this._scheduleControl.TabIndex = 39;
             // 
             // _typeOfRepaymentComboBox
             // 
