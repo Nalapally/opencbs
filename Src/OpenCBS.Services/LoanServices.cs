@@ -3044,18 +3044,41 @@ namespace OpenCBS.Services
             return engine.ExecuteFile(file);
         }
 
-        public Loan SaveInstallmentsAndRepaymentEvents(Loan loan)
+        public Loan SaveInstallmentsAndRepaymentEvents(Loan loan, IList<Installment> newInstallments)
         {
-            var repayEvent = loan.Events.GetRepaymentEvents().First(i => !i.IsFired);
+            var repayEvent = loan.Events.GetRepaymentEvents().First(i => !i.IsFired).Copy();
+            var amount =
+                loan.Events.GetRepaymentEvents()
+                    .Where(i => !i.IsFired)
+                    .Sum(i => i.Commissions.Value + i.Penalties.Value + i.Interests.Value + i.Principal.Value);
             using (var sqlTransaction = _loanManager.GetConnection().BeginTransaction())
             {
                 try
                 {
+                    if (ApplicationSettings.GetInstance(User.CurrentUser.Md5).UseMandatorySavingAccount)
+                    {
+                        var saving =
+                            (from item in loan.Project.Client.Savings where item.Product.Code == "default" select item)
+                                .FirstOrDefault();
+                        if (saving == null)
+                        {
+                            MessageBox.Show("Make sure that client has default saving account");
+                            return loan;
+                        }
+                        ServicesProvider.GetInstance()
+                                        .GetSavingServices()
+                                        .Withdraw(saving, repayEvent.Date, amount,
+                                                  "Withdraw for loan repayment " + loan.Code, User.CurrentUser,
+                                                  new Teller(),
+                                                  sqlTransaction);
+                        loan.Events.GetRepaymentEvents().First(i => !i.IsFired).Comment =
+                            saving.Events.Last().Id.ToString(CultureInfo.InvariantCulture);
+                    }
                     _ePs.FireEvent(repayEvent, loan, sqlTransaction);
                     ArchiveInstallments(loan, repayEvent, sqlTransaction);
-                    foreach (var installment in loan.InstallmentList)
+                    foreach (var installment in newInstallments)
                         _instalmentManager.UpdateInstallment(installment, loan.Id, repayEvent.Id, sqlTransaction);
-                    if (loan.AllInstallmentsRepaid)
+                    if (newInstallments.All(installment => installment.IsRepaid))
                         _ePs.FireEvent(loan.GetCloseEvent(TimeProvider.Now), loan, sqlTransaction);
 
                     sqlTransaction.Commit();
