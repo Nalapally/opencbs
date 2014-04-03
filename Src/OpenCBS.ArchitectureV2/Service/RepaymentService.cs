@@ -31,7 +31,7 @@ namespace OpenCBS.ArchitectureV2.Service
             return Settings.Loan;
         }
 
-        public Dictionary<string, string> GetAllRepaymentScriptsWithDecription()
+        public Dictionary<string, string> GetAllRepaymentScriptsWithTypes()
         {
             var scripts = new Dictionary<string, string>();
             var files = Directory
@@ -41,7 +41,7 @@ namespace OpenCBS.ArchitectureV2.Service
             foreach (var file in files)
             {
                 var script = RunScript(file);
-                scripts.Add(file, script.GetDescription());
+                scripts.Add(file, script.GetType());
             }
             return scripts;
         }
@@ -72,6 +72,7 @@ namespace OpenCBS.ArchitectureV2.Service
                         Interests = newInstallment.PaidInterests - installment.PaidInterests,
                         Penalties = newInstallment.PaidFees - installment.PaidFees,
                         Commissions = newInstallment.PaidCommissions - installment.PaidCommissions,
+                        Date = oldConfig.Date,
                         InstallmentNumber = installment.Number,
                         PastDueDays =
                             newInstallment.ExpectedDate > oldConfig.Date
@@ -98,6 +99,7 @@ namespace OpenCBS.ArchitectureV2.Service
                             Penalties = newInstallment.PaidFees - installment.PaidFees,
                             Commissions = newInstallment.PaidCommissions - installment.PaidCommissions,
                             InstallmentNumber = installment.Number,
+                            Date = oldConfig.Date,
                             PastDueDays = 0,
                             PaymentMethod = oldConfig.PaymentMethod,
                             Comment = oldConfig.Comment,
@@ -115,6 +117,7 @@ namespace OpenCBS.ArchitectureV2.Service
                             Penalties = newInstallment.PaidFees - installment.PaidFees,
                             Commissions = newInstallment.PaidCommissions - installment.PaidCommissions,
                             InstallmentNumber = installment.Number,
+                            Date = oldConfig.Date,
                             PastDueDays = (oldConfig.Date - newInstallment.ExpectedDate).Days,
                             PaymentMethod = oldConfig.PaymentMethod,
                             Comment = oldConfig.Comment,

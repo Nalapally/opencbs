@@ -8,6 +8,6 @@ namespace OpenCBS.ArchitectureV2.Interface.Service
     {
         RepaymentSettings Settings { get; set; }
         Loan Repay();
-        Dictionary<string, string> GetAllRepaymentScriptsWithDecription();
+        Dictionary<string, string> GetAllRepaymentScriptsWithTypes();
     }
 }
