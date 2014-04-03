@@ -3016,8 +3016,6 @@ namespace OpenCBS.Services
             _loanManager.SetRepaymentModuleLastStartupDate(date);
         }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
         public IList<WriteOffOption> GetWriteOffOptions()
         {
             return _loanManager.GetWriteOffOptions();
