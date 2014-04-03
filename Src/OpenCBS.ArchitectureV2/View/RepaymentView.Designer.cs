@@ -102,7 +102,6 @@
             // 
             resources.ApplyResources(this._commentLabel, "_commentLabel");
             this._commentLabel.Name = "_commentLabel";
-
             // 
             // _commissionNumericUpDown
             // 
