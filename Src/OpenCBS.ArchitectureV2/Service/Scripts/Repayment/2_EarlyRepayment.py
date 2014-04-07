@@ -64,38 +64,42 @@ def Repay(settings):
         return
     installments = settings.Loan.InstallmentList
     newInstallments = List[Installment]()
-    k = 0
-    while k < i:
-        newInstallments.Add(installments[k])
-        k += 1
-
+    
     while len(installments) > i and (principal > 0 or interest > 0 or penalty > 0 or commission > 0):       
         installment = installments[i]
         if installment.ExpectedDate > settings.Date:
             installment.PaidCommissions = installment.PaidCommissions.Value + commission
             installment.PaidFees = installment.PaidFees.Value + penalty
             installment.PaidInterests = installment.PaidInterests.Value + interest
-            installment.InterestsRepayment = installment.PaidInterests
-            installment.PaidCapital = installment.PaidCapital.Value + principal
-            installment.CapitalRepayment = installment.PaidCapital
-            newInstallments.Add(installment)
-            if len(installments) > i + 1:
+            
+            i += 1
+            if len(installments) > i and principal > 0:
+                installment.InterestsRepayment = installment.PaidInterests
+                installment.PaidCapital = installment.PaidCapital.Value + principal
+                installment.CapitalRepayment = installment.PaidCapital
+
                 loan = settings.Loan.Copy()
                 loan.Amount = installment.OLB.Value - principal
-                loan.NbOfInstallments = len(installments) - i - 1
+                loan.NbOfInstallments = len(installments) - i
                 loan.GracePeriod = 0
                 loan.StartDate = settings.Date
                 loan.FirstInstallmentDate = settings.Date.AddDays(30)
-                newInstallments.AddRange(ServiceProvider.GetContractServices().SimulateScheduleCreation(loan))
+
+                newInstallments = ServicesProvider.GetInstance().GetContractServices().SimulateScheduleCreation(loan)
             break
         installment = RepayCommission(installment)
         installment = RepayPenalty(installment)
         installment = RepayInterest(installment)
         installment = RepayPrincipal(installment)
-        newInstallments.Add(installment)
         i += 1
-    
-    settings.Loan.InstallmentList = newInstallments
+
+    if len(newInstallments) > 0:
+        k = 0
+        while len(installments) > i + k:
+            n = installments[i + k].Number
+            installments[i + k] = newInstallments[k]
+            installments[i + k].Number = n
+            k += 1
 
 # вызывается когда изменяется дата оплаты и при открытии окна оплаты(автоматический режим)
 # меняет суммы к оплате по ОД, %, пени и комиссии
@@ -123,7 +127,6 @@ def GetInitAmounts(settings):
     settings.Interest = interest
     settings.Penalty = penalty
     settings.Commission = commission
-    settings.Amount = principal + interest + penalty + commission
 
 # вызывается когда изменяется сумма к оплате(автоматический режим)
 # меняет суммы к оплате по ОД, %, пени и комиссии
@@ -179,7 +182,8 @@ def GetAmounts(settings):
         i += 1
         if len(installments) <= i:
             break
-
+    if principal > settings.Loan.OLB:
+        principal = settings.Loan.OLB
     settings.Principal = principal
     settings.Interest = interest
     settings.Penalty = penalty

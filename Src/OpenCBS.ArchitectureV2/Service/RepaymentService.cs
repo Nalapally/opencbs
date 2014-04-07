@@ -56,11 +56,7 @@ namespace OpenCBS.ArchitectureV2.Service
 #endif
             ScriptEngine engine = Python.CreateEngine(options);
             var file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Scripts\\Repayment\\" + scriptName);
-
-            var searchPaths = engine.GetSearchPaths();
-            searchPaths.Add(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Scripts\\Schedule\\"));
-            engine.SetSearchPaths(searchPaths);
-
+            
             var assemby = typeof(ServicesProvider).Assembly;
             engine.Runtime.LoadAssembly(assemby);
             assemby = typeof(Installment).Assembly;
