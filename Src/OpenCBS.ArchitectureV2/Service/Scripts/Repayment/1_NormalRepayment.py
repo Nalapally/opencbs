@@ -86,7 +86,6 @@ def GetInitAmounts(settings):
     settings.Interest = interest
     settings.Penalty = penalty
     settings.Commission = commission
-    settings.Amount = principal + interest + penalty + commission
 
 # вызывается когда изменяется сумма к оплате(автоматический режим)
 # меняет суммы к оплате по ОД, %, пени и комиссии

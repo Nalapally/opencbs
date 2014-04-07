@@ -3062,6 +3062,12 @@ namespace OpenCBS.Services
                             MessageBox.Show("Make sure that client has default saving account");
                             return loan;
                         }
+                        var balance = saving.GetBalance(repayEvent.Date);
+                        if (amount > balance)
+                        {
+                            MessageBox.Show("Balance is not enough");
+                            return loan;
+                        }
                         ServicesProvider.GetInstance()
                                         .GetSavingServices()
                                         .Withdraw(saving, repayEvent.Date, amount,
