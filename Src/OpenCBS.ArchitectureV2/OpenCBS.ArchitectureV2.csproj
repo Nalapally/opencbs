@@ -211,8 +211,7 @@
     <None Include="Resources\Logo.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Service\Scripts\Repayment\EarlyRepayment.py" />
-    <Content Include="Service\Scripts\Repayment\NormalRepayment.py" />
+    <Folder Include="Service\Scripts\Repayment\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
