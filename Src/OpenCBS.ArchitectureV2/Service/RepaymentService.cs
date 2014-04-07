@@ -7,8 +7,10 @@ using Microsoft.Scripting.Hosting;
 using OpenCBS.ArchitectureV2.Interface.Service;
 using OpenCBS.CoreDomain;
 using OpenCBS.CoreDomain.Contracts.Loans;
+using OpenCBS.CoreDomain.Contracts.Loans.Installments;
 using OpenCBS.CoreDomain.Events;
 using OpenCBS.Enums;
+using OpenCBS.Services;
 
 namespace OpenCBS.ArchitectureV2.Service
 {
@@ -54,6 +56,16 @@ namespace OpenCBS.ArchitectureV2.Service
 #endif
             ScriptEngine engine = Python.CreateEngine(options);
             var file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Scripts\\Repayment\\" + scriptName);
+
+            var searchPaths = engine.GetSearchPaths();
+            searchPaths.Add(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Scripts\\Schedule\\"));
+            engine.SetSearchPaths(searchPaths);
+
+            var assemby = typeof(ServicesProvider).Assembly;
+            engine.Runtime.LoadAssembly(assemby);
+            assemby = typeof(Installment).Assembly;
+            engine.Runtime.LoadAssembly(assemby);
+
             return engine.ExecuteFile(file);
         }
 

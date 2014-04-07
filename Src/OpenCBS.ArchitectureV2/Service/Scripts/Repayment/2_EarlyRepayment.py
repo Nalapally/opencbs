@@ -1,4 +1,10 @@
 # -*- coding: utf-8 -*-
+import sys
+import clr
+
+from System.Collections.Generic import List
+from OpenCBS.Services import ServicesProvider
+from OpenCBS.CoreDomain.Contracts.Loans.Installments import Installment
 
 def GetType():
     return "Ненормальный"
@@ -54,14 +60,42 @@ def Repay(settings):
     penalty = settings.Penalty
     commission = settings.Commission
     settings.Amount = principal + interest + penalty + commission
+    if settings.Amount == 0:
+        return
     installments = settings.Loan.InstallmentList
+    newInstallments = List[Installment]()
+    k = 0
+    while k < i:
+        newInstallments.Add(installments[k])
+        k += 1
+
     while len(installments) > i and (principal > 0 or interest > 0 or penalty > 0 or commission > 0):       
         installment = installments[i]
+        if installment.ExpectedDate > settings.Date:
+            installment.PaidCommissions = installment.PaidCommissions.Value + commission
+            installment.PaidFees = installment.PaidFees.Value + penalty
+            installment.PaidInterests = installment.PaidInterests.Value + interest
+            installment.InterestsRepayment = installment.PaidInterests
+            installment.PaidCapital = installment.PaidCapital.Value + principal
+            installment.CapitalRepayment = installment.PaidCapital
+            newInstallments.Add(installment)
+            if len(installments) > i + 1:
+                loan = settings.Loan.Copy()
+                loan.Amount = installment.OLB.Value - principal
+                loan.NbOfInstallments = len(installments) - i - 1
+                loan.GracePeriod = 0
+                loan.StartDate = settings.Date
+                loan.FirstInstallmentDate = settings.Date.AddDays(30)
+                newInstallments.AddRange(ServiceProvider.GetContractServices().SimulateScheduleCreation(loan))
+            break
         installment = RepayCommission(installment)
         installment = RepayPenalty(installment)
         installment = RepayInterest(installment)
         installment = RepayPrincipal(installment)
+        newInstallments.Add(installment)
         i += 1
+    
+    settings.Loan.InstallmentList = newInstallments
 
 # вызывается когда изменяется дата оплаты и при открытии окна оплаты(автоматический режим)
 # меняет суммы к оплате по ОД, %, пени и комиссии
@@ -75,6 +109,8 @@ def GetInitAmounts(settings):
     while True:       
         installment = installments[i]
         if installment.ExpectedDate > settings.Date:
+            days = (settings.Date.Date - installment.StartDate.Date).TotalDays
+            interest += installment.InterestsRepayment.Value * days / 30 - installment.PaidInterests.Value#когда есть переплата по % на несколько инсталяций вперед??????
             break
         principal += installment.CapitalRepayment.Value - installment.PaidCapital.Value
         interest += installment.InterestsRepayment.Value - installment.PaidInterests.Value
@@ -82,6 +118,7 @@ def GetInitAmounts(settings):
         i += 1
         if len(installments) <= i:
             break
+    
     settings.Principal = principal
     settings.Interest = interest
     settings.Penalty = penalty
@@ -104,6 +141,16 @@ def GetAmounts(settings):
     amount -= penalty
     while True:       
         installment = installments[i]
+        if installment.ExpectedDate > settings.Date:
+            days = (settings.Date.Date - installment.StartDate.Date).TotalDays
+            unpaid = installment.InterestsRepayment.Value * days / 30 - installment.PaidInterests.Value
+            if unpaid > amount:
+                unpaid = amount
+            interest += unpaid
+            amount -= unpaid
+            if amount > 0:
+                principal += amount
+            break
 
         unpaid = installment.CommissionsUnpaid.Value
         if unpaid > amount:
@@ -132,6 +179,7 @@ def GetAmounts(settings):
         i += 1
         if len(installments) <= i:
             break
+
     settings.Principal = principal
     settings.Interest = interest
     settings.Penalty = penalty
