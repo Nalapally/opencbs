@@ -88,6 +88,7 @@
     <Compile Include="DefaultRegistry.cs" />
     <Compile Include="EventAggregatorInterceptor.cs" />
     <Compile Include="EventPublisher.cs" />
+    <Compile Include="Event\RepaymentEvent.cs" />
     <Compile Include="Interface\IApplicationController.cs" />
     <Compile Include="Interface\IBackgroundTask.cs" />
     <Compile Include="Interface\IBackgroundTaskFactory.cs" />
