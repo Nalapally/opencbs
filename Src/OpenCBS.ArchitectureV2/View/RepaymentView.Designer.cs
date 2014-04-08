@@ -69,12 +69,6 @@
             resources.ApplyResources(this._scheduleControl, "_scheduleControl");
             this._scheduleControl.Name = "_scheduleControl";
             // 
-            // _scheduleControl
-            // 
-            this._scheduleControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._scheduleControl.Location = new System.Drawing.Point(0, 0);
-            this._scheduleControl.Name = "_scheduleControl";
-            // 
             // _typeOfRepaymentComboBox
             // 
             this._typeOfRepaymentComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;

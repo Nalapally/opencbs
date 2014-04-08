@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 using OpenCBS.ArchitectureV2.Interface.Presenter;
 using OpenCBS.CoreDomain.Accounting;
 using OpenCBS.CoreDomain.Contracts.Loans;
@@ -27,5 +28,6 @@ namespace OpenCBS.ArchitectureV2.Interface.View
         string SelectedScript { get; }
         PaymentMethod SelectedPaymentMethod { get; set; }
         string Description { set; }
+        DialogResult DialogResult { get; set; }
     }
 }

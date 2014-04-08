@@ -1651,9 +1651,12 @@ namespace OpenCBS.Services
                         if (int.TryParse(evnt.Comment, out id))
                         {
                             var listSavingsEvents = new List<SavingEvent>();
-
                             foreach (var saving in pClient.Savings)
-                                listSavingsEvents.AddRange(saving.Events.OfType<SavingEvent>());
+                                listSavingsEvents.AddRange(
+                                    ServicesProvider.GetInstance()
+                                                    .GetSavingServices()
+                                                    .GetSaving(saving.Id)
+                                                    .Events.OfType<SavingEvent>());
 
                             var debitSavingEvent = listSavingsEvents.First(ev => ev.Id == id);
                             var creditSavingEvent = listSavingsEvents.First(ev => ev.Amount == debitSavingEvent.Amount && ev.Date == debitSavingEvent.Date);
@@ -3041,11 +3044,11 @@ namespace OpenCBS.Services
             return engine.ExecuteFile(file);
         }
 
-        public Loan SaveInstallmentsAndRepaymentEvents(Loan loan, IList<Installment> newInstallments)
+        public Loan SaveInstallmentsAndRepaymentEvents(Loan loan, IList<Installment> newInstallments, EventStock eventStock)
         {
-            var repayEvent = loan.Events.GetRepaymentEvents().First(i => !i.IsFired).Copy();
+            var repayEvent = eventStock.GetRepaymentEvents().First(i => !i.IsFired).Copy();
             var amount =
-                loan.Events.GetRepaymentEvents()
+                eventStock.GetRepaymentEvents()
                     .Where(i => !i.IsFired)
                     .Sum(i => i.Commissions.Value + i.Penalties.Value + i.Interests.Value + i.Principal.Value);
             using (var sqlTransaction = _loanManager.GetConnection().BeginTransaction())
@@ -3062,10 +3065,11 @@ namespace OpenCBS.Services
                             MessageBox.Show("Make sure that client has default saving account");
                             return loan;
                         }
+                        saving = ServicesProvider.GetInstance().GetSavingServices().GetSaving(saving.Id);
                         var balance = saving.GetBalance(repayEvent.Date);
                         if (amount > balance)
                         {
-                            MessageBox.Show("Balance is not enough");
+                            MessageBox.Show("Balance is not enough to repay");
                             return loan;
                         }
                         ServicesProvider.GetInstance()
@@ -3074,15 +3078,20 @@ namespace OpenCBS.Services
                                                   "Withdraw for loan repayment " + loan.Code, User.CurrentUser,
                                                   new Teller(),
                                                   sqlTransaction);
-                        loan.Events.GetRepaymentEvents().First(i => !i.IsFired).Comment =
+                        eventStock.GetRepaymentEvents().First(i => !i.IsFired).Comment =
                             saving.Events.Last().Id.ToString(CultureInfo.InvariantCulture);
                     }
+                    loan.Events = eventStock;
                     _ePs.FireEvent(repayEvent, loan, sqlTransaction);
                     ArchiveInstallments(loan, repayEvent, sqlTransaction);
+                    loan.InstallmentList = newInstallments.ToList();
                     foreach (var installment in newInstallments)
                         _instalmentManager.UpdateInstallment(installment, loan.Id, repayEvent.Id, sqlTransaction);
                     if (newInstallments.All(installment => installment.IsRepaid))
+                    {
                         _ePs.FireEvent(loan.GetCloseEvent(TimeProvider.Now), loan, sqlTransaction);
+                        loan.Closed = true;
+                    }
 
                     sqlTransaction.Commit();
                 }
