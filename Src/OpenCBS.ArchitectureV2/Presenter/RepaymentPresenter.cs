@@ -26,7 +26,6 @@ namespace OpenCBS.ArchitectureV2.Presenter
 
         public void Setup()
         {
-            //_loan = _repaymentService.Settings.Loan.Copy();
             _repaymentService.Settings.Loan = _loan.Copy();
             _view.PrincipalMax = _loan.OLB;
             _view.RepaymentScripts = _repaymentService.GetAllRepaymentScriptsWithTypes();

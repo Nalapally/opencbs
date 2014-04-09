@@ -403,6 +403,9 @@ namespace OpenCBS.Services
 
                     ISavingsContract savingSimulation = (ISavingsContract) saving.Clone();
                         // Create a fake Saving object
+                    if (saving.Client == null)
+                        saving.Client =
+                            ServicesProvider.GetInstance().GetClientServices().FindTiersBySavingsId(saving.Id);
 
                     // Do deposit to the fake Saving object
                     savingSimulation.Deposit(depositAmount, dateTime, description, user, false, isPending, savingsMethod,
@@ -418,6 +421,14 @@ namespace OpenCBS.Services
                     foreach (SavingEvent savingEvent in events)
                     {
                         _ePS.FireEvent(savingEvent, saving, sqlTransaction);
+                        ServicesProvider.GetInstance()
+                                        .GetContractServices()
+                                        .CallInterceptor(new Dictionary<string, object>
+                                            {
+                                                {"Saving", saving},
+                                                {"Event", savingEvent},
+                                                {"SqlTransaction", sqlTransaction}
+                                            });
                     }
 
                     // Change overdraft state
