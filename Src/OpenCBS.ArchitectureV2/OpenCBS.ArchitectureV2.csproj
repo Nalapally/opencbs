@@ -36,26 +36,11 @@
     <Reference Include="IronPython">
       <HintPath>..\packages\IronPython.2.7.4\lib\Net40\IronPython.dll</HintPath>
     </Reference>
-    <Reference Include="IronPython.Modules">
-      <HintPath>..\packages\IronPython.2.7.4\lib\Net40\IronPython.Modules.dll</HintPath>
-    </Reference>
-    <Reference Include="IronPython.SQLite">
-      <HintPath>..\packages\IronPython.2.7.4\lib\Net40\IronPython.SQLite.dll</HintPath>
-    </Reference>
-    <Reference Include="IronPython.Wpf">
-      <HintPath>..\packages\IronPython.2.7.4\lib\Net40\IronPython.Wpf.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Dynamic">
       <HintPath>..\packages\IronPython.2.7.4\lib\Net40\Microsoft.Dynamic.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Scripting">
       <HintPath>..\packages\IronPython.2.7.4\lib\Net40\Microsoft.Scripting.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Scripting.AspNet">
-      <HintPath>..\packages\IronPython.2.7.4\lib\Net40\Microsoft.Scripting.AspNet.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Scripting.Metadata">
-      <HintPath>..\packages\IronPython.2.7.4\lib\Net40\Microsoft.Scripting.Metadata.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
@@ -194,10 +179,6 @@
     <ProjectReference Include="..\OpenCBS.CoreDomain\OpenCBS.CoreDomain.csproj">
       <Project>{d539c388-3848-4a3e-ab87-42b8e329755a}</Project>
       <Name>OpenCBS.CoreDomain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OpenCBS.Manager\OpenCBS.Manager.csproj">
-      <Project>{963a6b8b-779c-4052-b39a-8abbfbf16c1a}</Project>
-      <Name>OpenCBS.Manager</Name>
     </ProjectReference>
     <ProjectReference Include="..\OpenCBS.Services\OpenCBS.Services.csproj">
       <Project>{a859d97a-51fb-4961-af07-5856640511af}</Project>
