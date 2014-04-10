@@ -17,11 +17,14 @@ namespace OpenCBS.ArchitectureV2.Presenter
         private ISavingsContract _saving;
         private readonly IRepaymentView _view;
         private readonly IRepaymentService _repaymentService;
+        private readonly ITranslationService _translationService;
+        private string _balanceString;
 
-        public RepaymentPresenter(IRepaymentView view, IRepaymentService repaymentService)
+        public RepaymentPresenter(IRepaymentView view, IRepaymentService repaymentService, ITranslationService translationService)
         {
             _view = view;
             _repaymentService = repaymentService;
+            _translationService = translationService;
         }
 
         public void Setup()
@@ -32,6 +35,7 @@ namespace OpenCBS.ArchitectureV2.Presenter
             _view.PaymentMethods = ServicesProvider.GetInstance().GetPaymentMethodServices().GetAllPaymentMethods();
             _view.Title = _loan.Project.Client.Name + " " + _loan.Code;
             _repaymentService.Settings.ScriptName = _view.SelectedScript;
+            _balanceString = _translationService.Translate("Available balance: ");
             if (!ApplicationSettings.GetInstance(User.CurrentUser.Md5).UseMandatorySavingAccount) return;
             _saving =
                 (from item in _loan.Project.Client.Savings where item.Product.Code == "default" select item)
@@ -78,7 +82,7 @@ namespace OpenCBS.ArchitectureV2.Presenter
                 _repaymentService.Settings.DateChanged = true;
                 _repaymentService.Settings.Date = _view.Date;
                 if (_saving != null)
-                    _view.Description = "Доступный баланс " + _saving.GetBalance(_view.Date).Value.ToString("N2");
+                    _view.Description = _balanceString + _saving.GetBalance(_view.Date).Value.ToString("N2");
             }
             if (_repaymentService.Settings.Amount != _view.Amount)
             {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenCBS.ArchitectureV2.Interface.Presenter;
+using OpenCBS.ArchitectureV2.Interface.Service;
 using OpenCBS.ArchitectureV2.Interface.View;
 using OpenCBS.CoreDomain.Accounting;
 using OpenCBS.CoreDomain.Contracts.Loans;
@@ -10,7 +11,8 @@ namespace OpenCBS.ArchitectureV2.View
 {
     public partial class RepaymentView : BaseView, IRepaymentView
     {
-        public RepaymentView()
+        public RepaymentView(ITranslationService translationService)
+            : base(translationService)
         {
             InitializeComponent();
         }
