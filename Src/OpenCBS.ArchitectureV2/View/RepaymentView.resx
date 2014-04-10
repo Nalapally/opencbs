@@ -169,7 +169,7 @@
     <value>True</value>
   </data>
   <data name="_typeOfRepaymentLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>564, 72</value>
+    <value>539, 72</value>
   </data>
   <data name="_typeOfRepaymentLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>107, 15</value>
@@ -220,7 +220,7 @@
     <value>True</value>
   </data>
   <data name="_commentLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>564, 14</value>
+    <value>539, 14</value>
   </data>
   <data name="_commentLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>61, 15</value>
@@ -268,7 +268,7 @@
     <value>True</value>
   </data>
   <data name="_commissionLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>282, 101</value>
+    <value>263, 101</value>
   </data>
   <data name="_commissionLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>74, 15</value>
@@ -316,7 +316,7 @@
     <value>True</value>
   </data>
   <data name="_penaltyLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>282, 72</value>
+    <value>263, 72</value>
   </data>
   <data name="_penaltyLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>46, 15</value>
@@ -364,7 +364,7 @@
     <value>True</value>
   </data>
   <data name="_interestLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>282, 43</value>
+    <value>263, 43</value>
   </data>
   <data name="_interestLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>46, 15</value>
@@ -412,7 +412,7 @@
     <value>True</value>
   </data>
   <data name="_principalLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>282, 14</value>
+    <value>263, 14</value>
   </data>
   <data name="_principalLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 15</value>
@@ -676,7 +676,7 @@
     <value>True</value>
   </data>
   <data name="_paymentMethodLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>564, 101</value>
+    <value>539, 101</value>
   </data>
   <data name="_paymentMethodLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>99, 15</value>
