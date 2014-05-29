@@ -1033,10 +1033,6 @@ namespace OpenCBS.Services
             var scheduleBuilder = new ScheduleBuilder();
             var rescheduleAssembler = new RescheduleAssembler();
             var copyOfRescheduleConfiguration = (IScheduleConfiguration)rescheduleConfiguration.Clone();
-            copyOfRescheduleConfiguration.InterestRate *=
-                (decimal)scheduleConfiguration.PeriodPolicy.GetNumberOfPeriodsInYear(
-                    copyOfRescheduleConfiguration.StartDate,
-                    scheduleConfiguration.YearPolicy);
             if (loan.Product.ScriptName == null)
                 schedule = rescheduleAssembler.AssembleRescheduling(
                     schedule,
