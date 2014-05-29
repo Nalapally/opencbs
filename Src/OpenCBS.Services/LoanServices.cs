@@ -1173,11 +1173,7 @@ namespace OpenCBS.Services
             var trancheBuilder = new TrancheBuilder();
             var trancheAssembler = new TrancheAssembler();
             var copyOfTrancheConfiguration = (ITrancheConfiguration)trancheConfiguration.Clone();
-            copyOfTrancheConfiguration.InterestRate *=
-                (decimal)scheduleConfiguration.PeriodPolicy.GetNumberOfPeriodsInYear(
-                    copyOfTrancheConfiguration.StartDate,
-                    scheduleConfiguration.YearPolicy);
-
+            
             var newSchedule = new List<Installment>();
             if (loan.Product.ScriptName == null)
                 newSchedule = trancheAssembler.AssembleTranche(
@@ -1513,7 +1509,8 @@ namespace OpenCBS.Services
                             GracePeriod = trancheConfiguration.GracePeriod,
                             StartedFromInstallment = startInstallment == null ? 0 : startInstallment.Number,
                             User = _user,
-                            PaymentMethod = paymentMethod
+                            PaymentMethod = paymentMethod,
+                            Cancelable = true
                         };
 
                     trancheEvent.User = _user;
