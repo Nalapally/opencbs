@@ -22,6 +22,14 @@ left join Credit cr on cr.id = ce.contract_id
 left join InstallmentTypes it on it.id = cr.installment_type
 go
 
+update TrancheEvents
+set interest_rate = tr.interest_rate * FLOOR(365 / (it.nb_of_months*30 + it.nb_of_days))
+from TrancheEvents tr
+left join ContractEvents ce on ce.id = tr.id
+left join Credit cr on cr.id = ce.contract_id
+left join InstallmentTypes it on it.id = cr.installment_type
+go
+
 UPDATE  [TechnicalParameters]
 SET     [value] = 'v14.8.0.0'
 WHERE   [name] = 'VERSION'
