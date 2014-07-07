@@ -40,7 +40,7 @@ namespace OpenCBS.CoreDomain
             csb.InitialCatalog = IsProductionDatabase ? TechnicalSettings.DatabaseName : "opencbs_test";
             csb.ConnectTimeout = TechnicalSettings.DatabaseTimeout;
 
-            SqlConnection conn = new SqlConnection(csb.ConnectionString);
+            SqlConnection conn = new SqlConnection(@"data source=(LocalDB)\v11.0;Integrated Security=True;AttachDbFileName=|DataDirectory|new149.mdf;");
             conn.Open();
             return conn;
         }
