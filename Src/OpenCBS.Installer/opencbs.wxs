@@ -3,9 +3,9 @@
   <!--Remember: you need to change ProductVersion and ProductCode-->
 
   <?if $(sys.BUILDARCH)="x86"?>
-  	<?define PlatformProgramFilesFolder="[WindowsVolume]OpenCBS"?>
+  	<?define PlatformProgramFilesFolder="ProgramFilesFolder"?>
   <?else?>
-  	<?define PlatformProgramFilesFolder="[WindowsVolume]OpenCBS"?>
+  	<?define PlatformProgramFilesFolder="ProgramFiles64Folder"?>
   <?endif?>
 
   <?define PreviousVersion="14.8.0.0" ?>
@@ -443,12 +443,17 @@
     </Feature>
 
     <CustomAction Id="PreventDowngrading" Error="Newer version already installed." />
+	<CustomAction Id="SetTARGETDIR"
+              Directory="TARGETDIR"
+              Value="C:\OpenCBS"
+              Return="check" />
 
     <Icon Id="opencbs.ico" SourceFile="d:\build\Src\OpenCBS.Installer\Bitmaps\opencbs.ico"/>
 
     <InstallExecuteSequence>
       <Custom Action="PreventDowngrading" After="FindRelatedProducts">NEWERPRODUCTFOUND</Custom>
       <RemoveExistingProducts Before="InstallInitialize" />
+	  <Custom Action="SetTARGETDIR" After="InstallValidate" />
     </InstallExecuteSequence>
 
     <InstallUISequence>
