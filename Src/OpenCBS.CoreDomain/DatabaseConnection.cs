@@ -35,7 +35,7 @@ namespace OpenCBS.CoreDomain
             SqlConnectionStringBuilder csb = new SqlConnectionStringBuilder();
             csb.UserID = TechnicalSettings.DatabaseLoginName;
             csb.Password = TechnicalSettings.DatabasePassword;
-            csb.DataSource = TechnicalSettings.DatabaseServerName;
+            csb.DataSource = "new149";
             csb.PersistSecurityInfo = false;
             csb.InitialCatalog = IsProductionDatabase ? TechnicalSettings.DatabaseName : "opencbs_test";
             csb.ConnectTimeout = TechnicalSettings.DatabaseTimeout;
