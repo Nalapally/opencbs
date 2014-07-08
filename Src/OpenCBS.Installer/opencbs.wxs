@@ -3,9 +3,9 @@
   <!--Remember: you need to change ProductVersion and ProductCode-->
 
   <?if $(sys.BUILDARCH)="x86"?>
-  	<?define PlatformProgramFilesFolder="ProgramFilesFolder"?>
+  	<?define PlatformProgramFilesFolder="C:\OpenCBSDemo"?>
   <?else?>
-  	<?define PlatformProgramFilesFolder="ProgramFiles64Folder"?>
+  	<?define PlatformProgramFilesFolder="C:\OpenCBSDemo"?>
   <?endif?>
 
   <?define PreviousVersion="14.8.0.0" ?>
