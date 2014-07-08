@@ -3595,6 +3595,7 @@ if not exist "$(TargetDir)Extensions" md "$(TargetDir)Extensions"
 
 xcopy "$(SolutionDir)*.url" "$(TargetDir)ProgramFiles" /y
 xcopy "$(SolutionDir)*.ico" "$(TargetDir)" /y
+xcopy /y "$(SolutionDir)new149.mdf" "$(TargetDir)"
 xcopy "$(SolutionDir)OpenCBS.GUI\Template\*.css" "$(TargetDir)Template" /s /y
 xcopy "$(SolutionDir)OpenCBS.GUI\Template\*.js" "$(TargetDir)Template" /s /y
 xcopy "$(SolutionDir)OpenCBS.GUI\Template\*.png" "$(TargetDir)Template" /s /y
