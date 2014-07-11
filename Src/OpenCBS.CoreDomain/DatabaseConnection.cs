@@ -35,12 +35,12 @@ namespace OpenCBS.CoreDomain
             SqlConnectionStringBuilder csb = new SqlConnectionStringBuilder();
             csb.UserID = TechnicalSettings.DatabaseLoginName;
             csb.Password = TechnicalSettings.DatabasePassword;
-            csb.DataSource = "new149";
+            csb.DataSource = "DemoDB";
             csb.PersistSecurityInfo = false;
             csb.InitialCatalog = IsProductionDatabase ? TechnicalSettings.DatabaseName : "opencbs_test";
             csb.ConnectTimeout = TechnicalSettings.DatabaseTimeout;
 
-            SqlConnection conn = new SqlConnection(@"data source=(LocalDB)\v11.0;Integrated Security=True;AttachDbFileName=|DataDirectory|new149.mdf;");
+            SqlConnection conn = new SqlConnection(@"data source=(LocalDB)\v11.0;Integrated Security=True;AttachDbFileName=|DataDirectory|DemoDB.mdf;");
             conn.Open();
             return conn;
         }

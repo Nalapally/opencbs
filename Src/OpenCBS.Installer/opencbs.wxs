@@ -111,8 +111,8 @@
 				  <File Id="setup.bat" Source="SourceDir\setup.bat" />
 				  <File Id="dump.bat" Source="SourceDir\dump.bat" />
 				  <File Id="dumpObjects.bat" Source="SourceDir\dumpObjects.bat" />
-				  <File Id="new149.mdf" Source="SourceDir\new149.mdf" />
-				  <File Id="new149_log.ldf" Source="SourceDir\new149_log.ldf" />
+				  <File Id="DemoDB.mdf" Source="SourceDir\DemoDB.mdf" />
+				  <File Id="DemoDB.ldf" Source="SourceDir\DemoDB.ldf" />
 				</Component>
 				<!--<Component Id="BuildLabel.txt" Guid="67E3FC7F-3C61-42db-B7EC-B14FDF99E328">
 				  <File Id="BuildLabel.txt" Source="SourceDir\BuildLabel.txt" />
