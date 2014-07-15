@@ -347,9 +347,8 @@ namespace OpenCBS.Manager
 
         public bool IsEnabled()
         {
-            return false;
-            //if (null == AttachmentsConnection) return false;
-            //return ConnectionState.Open == AttachmentsConnection.State;
+            if (null == AttachmentsConnection) return false;
+            return ConnectionState.Open == AttachmentsConnection.State;
         }
 
         

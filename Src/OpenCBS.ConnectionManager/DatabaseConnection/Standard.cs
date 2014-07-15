@@ -74,26 +74,23 @@ namespace OpenCBS.DatabaseConnection
             try
             {
                 _connectionOnMasterDatabase = new SqlConnection(
-                   String.Format("user id={0};password={1};data source={2};persist security info=False;initial catalog=MASTER;connection timeout={3}",
-                                 pLogin, pPassword, pServer, pTimeout));
+                   String.Format(@"data source=(LocalDB)\v11.0;Integrated Security=True;"));
 
                 _connectionStringForRestore =
-                    String.Format("user id={0};password={1};data source={2};persist security info=False;initial catalog=MASTER;connection timeout={3}",
-                                  pLogin, pPassword, pServer, pTimeout);
+                    String.Format(@"data source=(LocalDB)\v11.0;Integrated Security=True;Initial Catalog={0}", pDatabase);
 
                 _connection = new SqlConnection(
-                    String.Format("user id={0};password={1};data source={2};persist security info=False;initial catalog={3};connection timeout={4};Asynchronous Processing=true",
-                                  pLogin, pPassword, pServer, pDatabase, pTimeout));
+                    String.Format(@"data source=(LocalDB)\v11.0;Integrated Security=True;Initial Catalog={0}", pDatabase));
+
                 _connection.Open();
 
                 _secondaryConnection = new SqlConnection(
-                    String.Format("user id={0};password={1};data source={2};persist security info=False;initial catalog={3};connection timeout={4}",
-                                  pLogin, pPassword, pServer, pDatabase, pTimeout));
+                    String.Format(@"data source=(LocalDB)\v11.0;Integrated Security=True;Initial Catalog={0}", pDatabase));
                 _secondaryConnection.Open();
 
                 _attachmentsConnection = new SqlConnection(
-                    String.Format("user id={0};password={1};data source={2};persist security info=False;initial catalog={3};connection timeout={4}",
-                                  pLogin, pPassword, pServer, pDatabase + "_attachments", pTimeout));
+                    String.Format(@"data source=(LocalDB)\v11.0;Integrated Security=True;Initial Catalog={0}",
+                                  pDatabase + "_attachments"));
                 
                 _connectionInitSuceeded = true;
             }
@@ -346,8 +343,7 @@ namespace OpenCBS.DatabaseConnection
 
         public static SqlConnection MasterConnection()
         {
-            string sqlConnection = String.Format(@"user id={0};password={1};data source={2};persist security info=False;initial catalog=MASTER;connection timeout={3}",
-                TechnicalSettings.DatabaseLoginName, TechnicalSettings.DatabasePassword, TechnicalSettings.DatabaseServerName, TechnicalSettings.DatabaseTimeout);
+            string sqlConnection = @"data source=(LocalDB)\v11.0;Integrated Security=True;";
             return new SqlConnection(sqlConnection);
         }
     }

@@ -17,9 +17,9 @@ WHILE @@FETCH_STATUS = 0
 BEGIN
     IF NOT OBJECT_ID(@name + '..TechnicalParameters') IS NULL
     BEGIN
-        SET @query = N'USE ' + @name + '; SELECT @versionOut = value FROM dbo.TechnicalParameters WHERE name = ''version'''
+        SET @query = N'USE [' + @name + ']; SELECT @versionOut = value FROM dbo.TechnicalParameters WHERE name = ''version'''
         EXEC sp_executesql @query, N'@versionOut NVARCHAR(MAX) OUTPUT', @versionOut = @version OUTPUT
-        SET @query = N'USE ' + @name + ';SELECT TOP 1 @branchOut = code FROM dbo.Branches'
+        SET @query = N'USE [' + @name + '];SELECT TOP 1 @branchOut = code FROM dbo.Branches'
         EXEC sp_executesql @query, N'@branchOut NVARCHAR(MAX) OUTPUT', @branchOut = @branch OUTPUT
         INSERT INTO @databases VALUES (@name, @version, @branch)
     END
