@@ -74,10 +74,10 @@
 	  
 	  <Directory Id="DEMODIRECTORY" Name="DemoDb">
 		<Component Id="DemoDbDirectory" Guid="fefa597c-f9df-4073-8128-d2c7fc92775a">
-			<File Id="DemoDB.mdf" Source="DemoDb\DemoDB.mdf" />
-			<File Id="DemoDB.ldf" Source="DemoDb\DemoDB.ldf" />
-			<File Id="DemoDB_attachments.mdf" Source="DemoDb\DemoDB_attachments.mdf" />
-			<File Id="DemoDB_attachments.ldf" Source="DemoDb\DemoDB_attachments.ldf" />
+			<File Id="DemoDB.mdf" Source="SourceDir\DemoDB.mdf" />
+			<File Id="DemoDB.ldf" Source="SourceDir\DemoDB.ldf" />
+			<File Id="DemoDB_attachments.mdf" Source="SourceDir\DemoDB_attachments.mdf" />
+			<File Id="DemoDB_attachments.ldf" Source="SourceDir\DemoDB_attachments.ldf" />
 		</Component>
 	  </Directory>
 
