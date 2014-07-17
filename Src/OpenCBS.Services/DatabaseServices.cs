@@ -48,18 +48,22 @@ namespace OpenCBS.Services
 
         public bool CheckSQLServerConnection()
         {
+            const string path = "C:\\Users\\Public";
+#if Debug
+            path =  AppDomain.CurrentDomain.BaseDirectory;
+#endif
             if (TechnicalSettings.UseDemoDatabase &&
-                File.Exists(@"C:\Users\Public\DemoDB.mdf") &&
-                File.Exists(@"C:\Users\Public\DemoDB.ldf") &&
-                File.Exists(@"C:\Users\Public\DemoDB_attachments.mdf") &&
-                File.Exists(@"C:\Users\Public\DemoDB_attachments.ldf"))
+                File.Exists(path + "\\DemoDB.mdf") &&
+                File.Exists(path + "\\DemoDB.ldf") &&
+                File.Exists(path + "\\DemoDB_attachments.mdf") &&
+                File.Exists(path + "\\DemoDB_attachments.ldf"))
             {
                 using (var connection = ConnectionManager.GeneralSqlConnection)
                 {
                     connection.Open();
                     var databases = DatabaseManager.GetOpenCbsDatabases(connection);
                     if (databases.FirstOrDefault(database => database.Name == "DemoDB") == null)
-                        DatabaseManager.AttachDemoDatabase(connection);
+                        DatabaseManager.AttachDemoDatabase(connection, path);
                 }
             }
             return ConnectionManager.CheckSQLServerConnection();
