@@ -590,5 +590,19 @@ namespace OpenCBS.Manager.Database
             }
             return result;
         }
+
+        public static void AttachDemoDatabase(SqlConnection connection)
+        {
+            const string query = @"CREATE DATABASE DemoDB ON 
+                    (FILENAME = 'C:\Users\Public\DemoDB.mdf'), 
+                    (FILENAME = 'C:\Users\Public\DemoDB.ldf')
+                    (FILENAME = 'C:\Users\Public\DemoDB_attachments.mdf'),
+                    (FILENAME = 'C:\Users\Public\DemoDB_attachments.ldf')
+                    FOR ATTACH;";
+            using (var command = new OpenCbsCommand(query, connection))
+            {
+                command.ExecuteNonQuery();
+            }
+        }
     }
 }
